@@ -27,4 +27,5 @@ public class TestServlet {
         LOG.debug("Recieved request");
         return "<h3>Another text</h3>";
     }
+
 }
