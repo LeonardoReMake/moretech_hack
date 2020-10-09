@@ -4,15 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import ru.moretech.moretech_server.Entities.CarBrand;
-import ru.moretech.moretech_server.Entities.Marketplace;
+import ru.moretech.moretech_server.Entities.MarketplaceEntities.Marketplace;
 
-import javax.security.auth.login.CredentialExpiredException;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 
 public class MarketplaceApi {

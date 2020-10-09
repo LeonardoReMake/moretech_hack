@@ -1,10 +1,8 @@
-package ru.moretech.moretech_server.Entities;
+package ru.moretech.moretech_server.Entities.MarketplaceEntities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.http.StreamingHttpOutputMessage;
 
-import java.util.List;
 import java.util.Map;
 
 @JsonIgnoreProperties(ignoreUnknown = true)

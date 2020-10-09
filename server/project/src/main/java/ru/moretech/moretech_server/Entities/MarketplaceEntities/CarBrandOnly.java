@@ -1,21 +1,13 @@
-package ru.moretech.moretech_server.Entities;
+package ru.moretech.moretech_server.Entities.MarketplaceEntities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CarBrand {
+public class CarBrandOnly {
     private String alias;
     private String logo;
-    @JsonProperty
-    private CarModel[] models;
     private String title;
-
-    public void setModels(CarModel[] models) {
-        this.models = models;
-    }
+    private String titleRus;
 
     public String getAlias() {
         return alias;
@@ -33,7 +25,6 @@ public class CarBrand {
         this.logo = logo;
     }
 
-
     public String getTitle() {
         return title;
     }
@@ -49,6 +40,4 @@ public class CarBrand {
     public void setTitleRus(String titleRus) {
         this.titleRus = titleRus;
     }
-
-    private String titleRus;
 }
