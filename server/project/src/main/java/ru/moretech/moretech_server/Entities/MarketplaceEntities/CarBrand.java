@@ -11,6 +11,10 @@ public class CarBrand {
     private CarModel[] models;
     private String title;
 
+    public CarModel[] getModels() {
+        return models;
+    }
+
     public void setModels(CarModel[] models) {
         this.models = models;
     }

@@ -8,4 +8,12 @@ public class Marketplace {
 
     @JsonProperty
     private CarBrand[] list;
+
+    public CarBrand[] getList() {
+        return list;
+    }
+
+    public void setList(CarBrand[] list) {
+        this.list = list;
+    }
 }

@@ -18,21 +18,23 @@ public class MarketplaceApi {
     @Value("${marketplaceUrl}")
     private String marketplaceApiUrl;
 
+    private Marketplace marketplace = null;
+
     public Marketplace getMarketplace() throws JsonProcessingException {
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        httpHeaders.set("x-ibm-client-id", ibmClientId);
+        if (marketplace == null) {
+            RestTemplate restTemplate = new RestTemplate();
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            httpHeaders.set("x-ibm-client-id", ibmClientId);
 
-        HttpEntity<String> entity = new HttpEntity<>(httpHeaders);
-        ResponseEntity<String> exchange =
-                restTemplate.exchange(marketplaceApiUrl, HttpMethod.GET, entity,
-                        String.class);
+            HttpEntity<String> entity = new HttpEntity<>(httpHeaders);
+            ResponseEntity<String> exchange =
+                    restTemplate.exchange(marketplaceApiUrl, HttpMethod.GET, entity,
+                            String.class);
 
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        return objectMapper.readValue(exchange.getBody(), Marketplace.class);
+            ObjectMapper objectMapper = new ObjectMapper();
+            marketplace = objectMapper.readValue(exchange.getBody(), Marketplace.class);
+        }
+        return marketplace;
     }
-
-
 }
