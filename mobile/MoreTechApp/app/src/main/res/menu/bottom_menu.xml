@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/feed_item"
+        android:enabled="true"
+        android:icon="@drawable/menu_icon_def"
+        android:title="Рекомендации"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/coworkers_item"
+        android:enabled="true"
+        android:icon="@drawable/menu_icon_def"
+        android:title="Карта"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/chat_item"
+        android:enabled="true"
+        android:icon="@drawable/menu_icon_def"
+        android:title="Избранное"
+        app:showAsAction="ifRoom" />
+
+<!--    <item-->
+<!--        android:id="@+id/doc_item"-->
+<!--        android:enabled="true"-->
+<!--        android:icon="@drawable/menu_icon_def"-->
+<!--        android:title="Документы"-->
+<!--        app:showAsAction="ifRoom" />-->
+
+</menu>

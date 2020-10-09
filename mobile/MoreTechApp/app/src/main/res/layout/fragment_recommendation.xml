@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/bank_products_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:textColor="#000"
+            android:padding="16dp"
+            android:text="Предложения банка"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/bank_products_rv"
+            android:scrollbars="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/bank_products_tv"
+            app:layout_constraintBottom_toTopOf="@id/marketplace_tv"/>
+
+        <TextView
+            android:id="@+id/marketplace_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:textColor="#000"
+            android:padding="16dp"
+            android:text="Маркетплэйс"
+            app:layout_constraintTop_toBottomOf="@id/bank_products_rv"
+            app:layout_constraintBottom_toTopOf="@id/marketplace_rv" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/marketplace_rv"
+            android:scrollbars="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/marketplace_tv"
+            app:layout_constraintBottom_toTopOf="@id/recommendation_tv"/>
+
+        <TextView
+            android:id="@+id/recommendation_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:textColor="#000"
+            android:padding="16dp"
+            android:text="Маркетплэйс"
+            app:layout_constraintTop_toBottomOf="@id/marketplace_rv"
+            app:layout_constraintBottom_toTopOf="@id/recommendation_rv" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/recommendation_rv"
+            android:scrollbars="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/recommendation_tv"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
