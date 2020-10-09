@@ -22,19 +22,23 @@ public class MarketplaceApi {
 
     public Marketplace getMarketplace() throws JsonProcessingException {
         if (marketplace == null) {
-            RestTemplate restTemplate = new RestTemplate();
-            HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-            httpHeaders.set("x-ibm-client-id", ibmClientId);
-
-            HttpEntity<String> entity = new HttpEntity<>(httpHeaders);
-            ResponseEntity<String> exchange =
-                    restTemplate.exchange(marketplaceApiUrl, HttpMethod.GET, entity,
-                            String.class);
-
-            ObjectMapper objectMapper = new ObjectMapper();
-            marketplace = objectMapper.readValue(exchange.getBody(), Marketplace.class);
+            updateMarketplace();
         }
         return marketplace;
+    }
+
+    public void updateMarketplace() throws JsonProcessingException {
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        httpHeaders.set("x-ibm-client-id", ibmClientId);
+
+        HttpEntity<String> entity = new HttpEntity<>(httpHeaders);
+        ResponseEntity<String> exchange =
+                restTemplate.exchange(marketplaceApiUrl, HttpMethod.GET, entity,
+                        String.class);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        marketplace = objectMapper.readValue(exchange.getBody(), Marketplace.class);
     }
 }
