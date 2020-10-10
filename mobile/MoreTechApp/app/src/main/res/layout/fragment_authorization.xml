@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#fff"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:src="@drawable/close_icon"
+        android:id="@+id/close_dialog_auth"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/enter_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:textSize="32sp"
+        android:textColor="#222"
+        android:text="Введите номер"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Введите номер телефона, чтобы войти или зарегистрироваться"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textSize="20sp"
+        android:textColor="#222"
+        android:id="@+id/subtitle_tv"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/user_phone_input_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="16dp"
+        android:hint="Номер телефона"
+        android:textColorHint="#000"
+        android:textColor="#000"
+        android:background="#fff">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="20sp"
+            android:textColorHint="#000"
+            android:id="@+id/user_phone"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:background="@drawable/btn_round"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_margin="16dp"
+        android:text="ПРОДОЛЖИТЬ"
+        android:textColor="#FFF"
+        android:id="@+id/continue_auth"
+        style="?android:attr/borderlessButtonStyle"/>
+
+    <Button
+        android:background="@drawable/btn_round"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="ВОЙТИ ЧЕРЕЗ ГОСУСЛУГИ"
+        android:textColor="#222"
+        android:textStyle="bold"
+        android:backgroundTint="@color/gray_5"
+        style="?android:attr/borderlessButtonStyle"/>
+
+    <Button
+        android:background="@drawable/btn_round"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="ВОЙТИ ЧЕРЕЗ ВКОНТАКТЕ"
+        android:textColor="#222"
+        android:textStyle="bold"
+        android:backgroundTint="@color/gray_5"
+        style="?android:attr/borderlessButtonStyle"/>
+
+    <com.google.android.material.progressindicator.ProgressIndicator
+        style="@style/Widget.MaterialComponents.ProgressIndicator.Circular.Indeterminate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="56dp"
+        android:visibility="gone"
+        app:indicatorColor="?attr/colorPrimary"
+        app:trackColor="@color/colorAccent"
+        android:id="@+id/progress_indicator_auth"/>
+
+</LinearLayout>

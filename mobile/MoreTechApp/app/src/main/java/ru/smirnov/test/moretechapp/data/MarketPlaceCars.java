@@ -34,10 +34,15 @@ final public class MarketPlaceCars {
     }
 
     public List<Car> getCars(int count) {
+        if (cars == null) {
+            cars = new ArrayList<>();
+        }
+
         if (count < cars.size()) {
             return cars.subList(0, count);
         }
-        return null;
+
+        return cars;
     }
 
     public void setCars(Car[] cars) {

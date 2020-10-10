@@ -47,6 +47,9 @@ public class HorizontalCarRecyclerAdapter extends RecyclerView.Adapter<Horizonta
         return cars.size();
     }
 
+    public void addCars(List<Car> cars) {
+        this.cars.addAll(cars);
+    }
 
     public static class CarItem extends RecyclerView.ViewHolder {
         public ImageView carImg;

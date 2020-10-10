@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="userLoan"
+            type="ru.smirnov.test.moretechapp.models.UserLoan" />
+        <variable
+            name="userLoanResult"
+            type="ru.smirnov.test.moretechapp.models.UserLoanResult" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_bias="0">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/user_car_cost_il"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="16dp"
+                android:inputType="numberDecimal"
+                android:hint="Стоимость автомобиля"
+                android:textColorHint="#000"
+                android:textColor="#000"
+                android:background="#fff">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="20sp"
+                    android:textColorHint="#000"
+                    android:text="@{String.valueOf(userLoan.cost)}"
+                    android:id="@+id/user_car_cost"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.appcompat.widget.AppCompatSeekBar
+                android:id="@+id/user_cost_sb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:progress="@{Math.round((float)userLoan.cost / 50000) * 50000}"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="16dp"
+                android:max="3000000"
+                android:min="800000" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/user_initialFee_inp_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="16dp"
+                android:inputType="numberDecimal"
+                android:hint="Первоначальный платеж"
+                android:textColorHint="#000"
+                android:textColor="#000"
+                android:background="#fff">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="20sp"
+                    android:textColorHint="#000"
+                    android:text="@{String.valueOf(userLoan.initialFee)}"
+                    android:id="@+id/user_initialFee"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.appcompat.widget.AppCompatSeekBar
+                android:id="@+id/user_initialFee_sb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:progress="@{Math.round((float)userLoan.cost / 50000) * 50000}"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="16dp"
+                android:max="1500000"
+                android:min="800000" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/user_term_inp_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="16dp"
+                android:inputType="numberDecimal"
+                android:hint="Срок кредита"
+                android:textColorHint="#000"
+                android:textColor="#000"
+                android:background="#fff">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="20sp"
+                    android:textColorHint="#000"
+                    android:focusable="false"
+                    android:text="@{String.valueOf(userLoan.term)}"
+                    android:id="@+id/user_term"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.appcompat.widget.AppCompatSeekBar
+                android:id="@+id/user_term_sb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:progress="@{userLoan.term}"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="16dp"
+                android:max="7"
+                android:min="1" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/user_last_payment_il"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="16dp"
+                android:hint="Остаточный платеж"
+                android:textColorHint="#000"
+                android:textColor="#000"
+                android:background="#fff">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="20sp"
+                    android:inputType="numberDecimal"
+                    android:textColorHint="#000"
+                    android:text="@{String.valueOf(userLoan.residualPayment)}"
+                    android:id="@+id/user_last_payment"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.appcompat.widget.AppCompatSeekBar
+                android:id="@+id/user_last_payment_sb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:progress="@{Math.round((float)userLoan.residualPayment / 50000) * 50000}"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="16dp"
+                android:max="300"
+                android:min="20" />
+
+            <Button
+                android:background="@drawable/btn_round"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_margin="16dp"
+                android:text="ОСТАВИТЬ ЗАЯВКУ"
+                android:textColor="#FFF"
+                android:id="@+id/continue_loan"
+                style="?android:attr/borderlessButtonStyle"/>
+
+        </LinearLayout>
+        </ScrollView>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="#3A83F1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_bias="1">
+
+            <TextView
+                android:id="@+id/user_payment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:textColor="#fff"
+                android:textStyle="bold"
+                android:padding="16dp"
+                android:text="@{String.valueOf(userLoanResult.payment)}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintVertical_bias="0"/>
+
+            <TextView
+                android:id="@+id/user_contractRate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:textColor="#fff"
+                android:textStyle="bold"
+                android:padding="16dp"
+                android:text="@{String.valueOf(userLoanResult.contractRate)}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1"
+                app:layout_constraintVertical_bias="0"/>
+
+            <TextView
+                android:id="@+id/user_loanAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:textColor="#fff"
+                android:textStyle="bold"
+                android:padding="16dp"
+                android:text="@{String.valueOf(userLoanResult.loanAmount)}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintVertical_bias="1"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
