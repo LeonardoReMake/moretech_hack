@@ -41,7 +41,7 @@ public class MarketplaceController {
                     }
 
                     carList.add(new Car(model.getBrand().getTitle(),
-                            model.getMinprice(),
+                            model.getMinPrice(),
                             model.getPhoto(),
                             model.getTitle(),
                             model.getTitleRus(),

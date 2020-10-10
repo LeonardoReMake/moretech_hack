@@ -11,7 +11,7 @@ public class CarModel {
     @JsonProperty
     private CarBody[] bodies;
     private CarBrandOnly brand;
-    private int minprice;
+    private int minPrice;
     private CarModelModel model;
     private String photo;
     private String title;
@@ -52,12 +52,12 @@ public class CarModel {
         this.brand = brand;
     }
 
-    public int getMinprice() {
-        return minprice;
+    public int getMinPrice() {
+        return minPrice;
     }
 
-    public void setMinprice(int minprice) {
-        this.minprice = minprice;
+    public void setMinPrice(int minPrice) {
+        this.minPrice = minPrice;
     }
 
     public CarModelModel getModel() {

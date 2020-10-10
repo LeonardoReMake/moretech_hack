@@ -8,6 +8,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import ru.moretech.moretech_server.Entities.calculatorEntities.calculate.CalculateRequest;
 import ru.moretech.moretech_server.Entities.calculatorEntities.calculate.CalculateResponse;
+import ru.moretech.moretech_server.Entities.calculatorEntities.paymentsGraph.GraphRequest;
+import ru.moretech.moretech_server.Entities.calculatorEntities.paymentsGraph.GraphResponse;
 import ru.moretech.moretech_server.Entities.calculatorEntities.settings.SettingsResponse;
 
 import java.util.Collections;
@@ -63,6 +65,5 @@ public class CalculatorApi {
 
         return objectMapper.readValue(exchange.getBody(), CalculateResponse.class);
     }
-
 
 }

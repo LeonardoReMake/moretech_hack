@@ -10,6 +10,7 @@ import ru.moretech.moretech_server.Entities.MarketplaceEntities.Marketplace;
 import ru.moretech.moretech_server.Entities.RecognitionEntities.CarResponse;
 import ru.moretech.moretech_server.Entities.RecognitionEntities.Content;
 import ru.moretech.moretech_server.Entities.clientEntities.Car;
+import ru.moretech.moretech_server.api.MLServerApi;
 import ru.moretech.moretech_server.work_with_vtb_api.MarketplaceApi;
 import ru.moretech.moretech_server.work_with_vtb_api.RecognitionApi;
 
@@ -26,13 +27,24 @@ public class RecognitionController {
     @Autowired
     private MarketplaceApi marketplaceApi;
 
+    @Autowired
+    private MLServerApi mlServerApi;
+
     @PostMapping("/")
     public List<Car> getCatResponse(@RequestBody Content content) throws JsonProcessingException {
         CarResponse responseFromVTBApi = recognitionApi.getCarResponse(content);
+        CarResponse responseFromML = mlServerApi.getCarResponse(content);
+
         List<Pair> listCars = new ArrayList<>();
 
         for (String s : responseFromVTBApi.getProbabilities().keySet()) {
             listCars.add(new Pair(s, responseFromVTBApi.getProbabilities().get(s)));
+        }
+
+        if (responseFromML.isConfidence()) {
+            for (String s : responseFromML.getProbabilities().keySet()) {
+                listCars.add(new Pair(s, responseFromML.getProbabilities().get(s)));
+            }
         }
 
         listCars.sort(Comparator.comparingDouble(value -> value.right));
@@ -44,7 +56,17 @@ public class RecognitionController {
         for (Pair listCar : listCars) {
             for (CarBrand carBrand : marketplace.getList()) {
                 for (CarModel model : carBrand.getModels()) {
-                    String marketplaceBrandModel = model.getBrand().getTitle() + " " + model.getTitle();
+                    String marketplaceBrand = model.getBrand().getTitle();
+                    String marketplaceModel;
+
+                    if (marketplaceBrand.equals("BMW")) {
+                        marketplaceModel = model.getTitle().split(" ")[0];
+                    } else {
+                        marketplaceModel = model.getTitle();
+                    }
+
+                    String marketplaceBrandModel = marketplaceBrand + " " + marketplaceModel;
+
                     if (marketplaceBrandModel.equals(listCar.left)) {
 
                         ArrayList<String> photos = new ArrayList<>();
@@ -57,7 +79,7 @@ public class RecognitionController {
                         }
 
                         carList.add(new Car(model.getBrand().getTitle(),
-                                model.getMinprice(),
+                                model.getMinPrice(),
                                 model.getPhoto(),
                                 model.getTitle(),
                                 model.getTitleRus(),
