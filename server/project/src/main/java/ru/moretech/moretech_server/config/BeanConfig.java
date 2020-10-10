@@ -2,6 +2,7 @@ package ru.moretech.moretech_server.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import ru.moretech.moretech_server.work_with_vtb_api.CalculatorApi;
 import ru.moretech.moretech_server.work_with_vtb_api.MarketplaceApi;
 import ru.moretech.moretech_server.work_with_vtb_api.RecognitionApi;
 
@@ -15,5 +16,10 @@ public class BeanConfig {
     @Bean
     public RecognitionApi getRecognition() {
         return new RecognitionApi();
+    }
+
+    @Bean
+    public CalculatorApi getCalculator() {
+        return new CalculatorApi();
     }
 }
