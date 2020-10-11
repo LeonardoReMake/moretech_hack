@@ -13,6 +13,7 @@ import ru.moretech.moretech_server.Entities.clientEntities.Car;
 import ru.moretech.moretech_server.work_with_vtb_api.MarketplaceApi;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -32,11 +33,19 @@ public class MarketplaceController {
             for (CarBrand carBrand : marketplace.getList()) {
                 for (CarModel model : carBrand.getModels()) {
                     ArrayList<String> photos = new ArrayList<>();
-                    Map<String, BodyType> render_main = model.getRenderPhotos().get("render_main");
+//                    Map<String, BodyType> render_main = model.getRenderPhotos().get("render_main");
+//
+//                    if (render_main != null) {
+//                        for (BodyType bodyType : render_main.values()) {
+//                            photos.add(bodyType.getPath());
+//                        }
+//                    }
 
-                    if (render_main != null) {
-                        for (BodyType bodyType : render_main.values()) {
-                            photos.add(bodyType.getPath());
+                    Collection<Map<String, BodyType>> values = model.getRenderPhotos().values();
+
+                    for (Map<String, BodyType> value : values) {
+                        for (BodyType s : value.values()){
+                            photos.add(s.getPath());
                         }
                     }
 

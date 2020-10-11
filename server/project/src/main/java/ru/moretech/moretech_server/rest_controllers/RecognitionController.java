@@ -15,12 +15,14 @@ import ru.moretech.moretech_server.work_with_vtb_api.MarketplaceApi;
 import ru.moretech.moretech_server.work_with_vtb_api.RecognitionApi;
 
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 @RestController
 @RequestMapping("/rest/recognition")
 public class RecognitionController {
-
+    private Logger logger = Logger.getLogger(RecognitionController.class.getName());
     @Autowired
     private RecognitionApi recognitionApi;
 
@@ -32,23 +34,40 @@ public class RecognitionController {
 
     @PostMapping("/")
     public List<Car> getCatResponse(@RequestBody Content content) throws JsonProcessingException {
+//        logger.log(Level.INFO, content.getContent());
         CarResponse responseFromVTBApi = recognitionApi.getCarResponse(content);
-        CarResponse responseFromML = mlServerApi.getCarResponse(content);
+        CarResponse responseFromML = null;
+        try {
+            responseFromML = mlServerApi.getCarResponse(content);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         List<Pair> listCars = new ArrayList<>();
 
         for (String s : responseFromVTBApi.getProbabilities().keySet()) {
-            listCars.add(new Pair(s, responseFromVTBApi.getProbabilities().get(s)));
+            if (responseFromVTBApi.getProbabilities().get(s) > 0.3) {
+                listCars.add(new Pair(s, responseFromVTBApi.getProbabilities().get(s)));
+            }
         }
 
-        if (responseFromML.isConfidence()) {
-            for (String s : responseFromML.getProbabilities().keySet()) {
-                listCars.add(new Pair(s, responseFromML.getProbabilities().get(s)));
+        if (responseFromML != null) {
+            if (responseFromML.isConfidence()) {
+                for (String s : responseFromML.getProbabilities().keySet()) {
+                    if (responseFromML.getProbabilities().get(s) > 0.3) {
+                        listCars.add(new Pair(s, responseFromML.getProbabilities().get(s)));
+                    }
+                }
             }
         }
 
         listCars.sort(Comparator.comparingDouble(value -> value.right));
         Collections.reverse(listCars);
+
+        for (Pair listCar : listCars) {
+            logger.log(Level.INFO, listCar.left + " " + listCar.right);
+        }
+
 
         Marketplace marketplace = marketplaceApi.getMarketplace();
         List<Car> carList = new ArrayList<>();
@@ -57,26 +76,28 @@ public class RecognitionController {
             for (CarBrand carBrand : marketplace.getList()) {
                 for (CarModel model : carBrand.getModels()) {
                     String marketplaceBrand = model.getBrand().getTitle();
-                    String marketplaceModel;
+                    String marketplaceModel = model.getTitle();
+                    String marketplaceBrandModel = (marketplaceBrand + " " + marketplaceModel).toLowerCase();
+                    String listModel = listCar.left.toLowerCase();
 
-                    if (marketplaceBrand.equals("BMW")) {
-                        marketplaceModel = model.getTitle().split(" ")[0];
-                    } else {
-                        marketplaceModel = model.getTitle();
-                    }
-
-                    String marketplaceBrandModel = marketplaceBrand + " " + marketplaceModel;
-
-                    if (marketplaceBrandModel.equals(listCar.left)) {
+                    if (marketplaceBrandModel.equals(listModel)) {
 
                         ArrayList<String> photos = new ArrayList<>();
-                        Map<String, BodyType> render_main = model.getRenderPhotos().get("render_main");
+//                        Map<String, BodyType> render_main = model.getRenderPhotos().get("render_main");
+//                        if (render_main != null) {
+//                            for (BodyType bodyType : render_main.values()) {
+//                                photos.add(bodyType.getPath());
+//                            }
+//                        }
 
-                        if (render_main != null) {
-                            for (BodyType bodyType : render_main.values()) {
-                                photos.add(bodyType.getPath());
+                        Collection<Map<String, BodyType>> values = model.getRenderPhotos().values();
+
+                        for (Map<String, BodyType> value : values) {
+                            for (BodyType s : value.values()){
+                                photos.add(s.getPath());
                             }
                         }
+
 
                         carList.add(new Car(model.getBrand().getTitle(),
                                 model.getMinPrice(),
@@ -88,7 +109,48 @@ public class RecognitionController {
                 }
             }
         }
+
+        logger.log(Level.INFO, carList.toString());
         return carList;
+    }
+
+
+    @PostMapping("/suggestion")
+    public List<Car> getSuggestion(@RequestBody Content content) throws JsonProcessingException {
+        String[] suggestions = mlServerApi.getCarSuggestion(content);
+        Marketplace marketplace = marketplaceApi.getMarketplace();
+        List<Car> listedCars = new ArrayList<>();
+
+        for (CarBrand carBrand : marketplace.getList()) {
+            for (CarModel model : carBrand.getModels()) {
+                String marketplaceBrand = model.getBrand().getTitle();
+                String marketplaceModel = model.getTitle();
+                String marketplaceBrandModel = (marketplaceBrand + " " + marketplaceModel).toLowerCase();
+
+                for (String suggestion : suggestions) {
+                    if (marketplaceBrandModel.equals(suggestion)) {
+
+                        ArrayList<String> photos = new ArrayList<>();
+                        Collection<Map<String, BodyType>> values = model.getRenderPhotos().values();
+
+                        for (Map<String, BodyType> value : values) {
+                            for (BodyType s : value.values()) {
+                                photos.add(s.getPath());
+                            }
+                        }
+
+
+                        listedCars.add(new Car(model.getBrand().getTitle(),
+                                model.getMinPrice(),
+                                model.getPhoto(),
+                                model.getTitle(),
+                                model.getTitleRus(),
+                                photos));
+                    }
+                }
+            }
+        }
+        return listedCars;
     }
 
     static class Pair {

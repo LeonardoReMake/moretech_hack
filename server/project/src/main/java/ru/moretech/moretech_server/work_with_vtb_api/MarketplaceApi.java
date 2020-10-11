@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
+import ru.moretech.moretech_server.Entities.MarketplaceEntities.CarBrand;
+import ru.moretech.moretech_server.Entities.MarketplaceEntities.CarModel;
 import ru.moretech.moretech_server.Entities.MarketplaceEntities.Marketplace;
 
 import java.util.Collections;
@@ -40,5 +42,20 @@ public class MarketplaceApi {
 
         ObjectMapper objectMapper = new ObjectMapper();
         marketplace = objectMapper.readValue(exchange.getBody(), Marketplace.class);
+
+        for (CarBrand carBrand : marketplace.getList()) {
+            if (carBrand.getAlias().equals("skoda")) {
+                for (CarModel model : carBrand.getModels()) {
+                    model.getBrand().setTitle("SKODA");
+                }
+            }
+
+            if (carBrand.getAlias().equals("bmw")) {
+                for (CarModel model : carBrand.getModels()) {
+                    model.setTitle(model.getTitle().split(" ")[0]);
+                }
+            }
+
+        }
     }
 }

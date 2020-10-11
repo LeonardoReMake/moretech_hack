@@ -26,9 +26,24 @@ public class MLServerApi {
 
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> exchange =
-                restTemplate.exchange(mlServerUrl, HttpMethod.POST, entity, String.class);
+                restTemplate.exchange(mlServerUrl + "/recognitionExtended", HttpMethod.POST, entity, String.class);
 
-        ObjectMapper objectMapperT = new ObjectMapper();
-        return objectMapperT.readValue(exchange.getBody(), CarResponse.class);
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(exchange.getBody(), CarResponse.class);
+    }
+
+    public String[] getCarSuggestion(Content content) throws JsonProcessingException {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Content> entity = new HttpEntity<>(content, httpHeaders);
+
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> exchange =
+                restTemplate.exchange(mlServerUrl + "/suggestion", HttpMethod.POST, entity, String.class);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(exchange.getBody(), String[].class);
     }
 }
