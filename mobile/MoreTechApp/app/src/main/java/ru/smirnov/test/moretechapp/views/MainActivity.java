@@ -31,6 +31,7 @@ import butterknife.ButterKnife;
 import ru.smirnov.test.moretechapp.R;
 import ru.smirnov.test.moretechapp.data.MarketPlaceCars;
 import ru.smirnov.test.moretechapp.views.fragments.FavoritesFragment;
+import ru.smirnov.test.moretechapp.views.fragments.HistoryFragment;
 import ru.smirnov.test.moretechapp.views.fragments.RecommendationFragment;
 import ru.smirnov.test.moretechapp.views.utils.BottomNavigationViewHelper;
 import ru.smirnov.test.moretechapp.views.utils.NoSwipePager;
@@ -48,6 +49,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private MarketPlaceCars marketPlaceCars;
 
     private String loggedIn = "logged";
+
+    private FavoritesFragment favoritesFragment;
+    private HistoryFragment historyFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,10 +83,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         bottomNavigation = findViewById(R.id.bottom_navigation);
         noSwipePager = findViewById(R.id.main_menu_view_pager);
 
+        favoritesFragment = new FavoritesFragment();
+        historyFragment = new HistoryFragment();
+
         NoSwipePagerAdapter pagerAdapter = new NoSwipePagerAdapter(getSupportFragmentManager());
         pagerAdapter.addFragment(new RecommendationFragment());
-        pagerAdapter.addFragment(new Fragment());
-        pagerAdapter.addFragment(new FavoritesFragment());
+        pagerAdapter.addFragment(historyFragment);
+        pagerAdapter.addFragment(favoritesFragment);
 
         noSwipePager.setPagingEnabled(false);
         noSwipePager.setOffscreenPageLimit(3);
@@ -101,9 +108,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 break;
             case R.id.coworkers_item:
                 noSwipePager.setCurrentItem(1, false);
+                historyFragment.invalidate();
                 break;
             case R.id.chat_item:
                 noSwipePager.setCurrentItem(2, false);
+                favoritesFragment.invalidate();
                 break;
         }
         return true;

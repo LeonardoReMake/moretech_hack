@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,27 +15,28 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.smirnov.test.moretechapp.R;
-import ru.smirnov.test.moretechapp.data.FavoritesCars;
+import ru.smirnov.test.moretechapp.data.HistoryCars;
 import ru.smirnov.test.moretechapp.views.CarInfoActivity;
 import ru.smirnov.test.moretechapp.views.adapters.VerticalCarRecyclerAdapter;
 
 import static ru.smirnov.test.moretechapp.views.CarInfoActivity.carImage;
 
-public class FavoritesFragment extends Fragment implements VerticalCarRecyclerAdapter.OnClickCallback {
+public class HistoryFragment extends Fragment implements VerticalCarRecyclerAdapter.OnClickCallback {
     private final static String TAG = FavoritesFragment.class.getName();
 
     @BindView(R.id.marketplace_rv)
     private RecyclerView favoritesRv;
 
-    private FavoritesCars favoritesCars;
+    private HistoryCars historyCars;
 
     private boolean isEmpty = false;
 
     private View viewContainer;
 
+
     public void invalidate() {
         super.onResume();
-        if (favoritesCars.getFavCars() == null || favoritesCars.getFavCars().size() == 0) {
+        if (historyCars.getCars() == null || historyCars.getCars().size() == 0) {
             isEmpty = true;
         } else {
             isEmpty = false;
@@ -45,7 +47,7 @@ public class FavoritesFragment extends Fragment implements VerticalCarRecyclerAd
         } else {
             viewContainer.setVisibility(View.GONE);
             favoritesRv.setVisibility(View.VISIBLE);
-            VerticalCarRecyclerAdapter favsAdapter = new VerticalCarRecyclerAdapter(favoritesCars.getFavCars(), this);
+            VerticalCarRecyclerAdapter favsAdapter = new VerticalCarRecyclerAdapter(historyCars.getCars(), this);
             LinearLayoutManager layoutManagerRecom = new LinearLayoutManager(
                     getActivity(),
                     LinearLayoutManager.VERTICAL,
@@ -59,7 +61,7 @@ public class FavoritesFragment extends Fragment implements VerticalCarRecyclerAd
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        favoritesCars = FavoritesCars.getInstance();
+        historyCars = HistoryCars.getInstance();
     }
 
     @Nullable
@@ -67,6 +69,9 @@ public class FavoritesFragment extends Fragment implements VerticalCarRecyclerAd
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_favorites, container, false);
         ButterKnife.bind(this, rootView);
+
+        ((TextView)rootView.findViewById(R.id.title_tv)).setText("История поиска");
+        ((TextView)rootView.findViewById(R.id.subtitle_tv_fav)).setText("После сканирования авто наиболее вероятное попадет в этот список");
 
         favoritesRv = rootView.findViewById(R.id.favorite_cars_rv);
         viewContainer = rootView.findViewById(R.id.placeholder_container);
@@ -76,7 +81,7 @@ public class FavoritesFragment extends Fragment implements VerticalCarRecyclerAd
         } else {
             viewContainer.setVisibility(View.GONE);
             favoritesRv.setVisibility(View.VISIBLE);
-            VerticalCarRecyclerAdapter favsAdapter = new VerticalCarRecyclerAdapter(favoritesCars.getFavCars(), this);
+            VerticalCarRecyclerAdapter favsAdapter = new VerticalCarRecyclerAdapter(historyCars.getCars(), this);
             LinearLayoutManager layoutManagerRecom = new LinearLayoutManager(
                     getActivity(),
                     LinearLayoutManager.VERTICAL,

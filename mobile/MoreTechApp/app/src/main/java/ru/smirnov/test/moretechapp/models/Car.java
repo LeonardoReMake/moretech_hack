@@ -69,7 +69,15 @@ public class Car extends ViewModel {
     }
 
     public void setPhotos(String[] photos) {
-        this.photos = photos;
+        this.photos = new String[photos.length+1];
+        if (this.photo != null) {
+            this.photos[0] = this.photo;
+        }
+        int i = 1;
+        for (String photo : photos) {
+            this.photos[i] = photo;
+            i++;
+        }
     }
 
     public ArrayList<Bitmap> getImages() {

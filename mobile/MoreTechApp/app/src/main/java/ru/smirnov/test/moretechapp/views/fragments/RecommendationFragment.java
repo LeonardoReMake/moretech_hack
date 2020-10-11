@@ -60,7 +60,9 @@ public class RecommendationFragment extends Fragment implements HorizontalCarRec
         ButterKnife.bind(this, rootView);
 
         rootView.findViewById(R.id.btn_start_camera).setOnClickListener(view -> {
-            startActivity(new Intent(getActivity(), CameraActivity.class));
+            Intent intent = new Intent(getActivity(), CameraActivity.class);
+            intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
+            startActivity(intent);
         });
 
         marketplaceRv = rootView.findViewById(R.id.marketplace_rv);

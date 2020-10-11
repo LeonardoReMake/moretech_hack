@@ -91,7 +91,9 @@ public class SplashScreen extends AppCompatActivity {
 
                 runOnUiThread(() -> {
                     marketPlaceCars.setCars(cars);
-                    startActivity(new Intent(this, MainActivity.class));
+                    Intent intent = new Intent(this, MainActivity.class);
+//                    intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    startActivity(intent);
                 });
             } catch (IOException | InterruptedException e) {
                 Log.e(TAG, "Could not send request");

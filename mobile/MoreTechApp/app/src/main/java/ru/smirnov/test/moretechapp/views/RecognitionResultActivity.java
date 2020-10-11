@@ -20,6 +20,7 @@ import java.util.List;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import okhttp3.MediaType;
@@ -28,10 +29,14 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import ru.smirnov.test.moretechapp.R;
+import ru.smirnov.test.moretechapp.data.HistoryCars;
+import ru.smirnov.test.moretechapp.data.MarketPlaceCars;
 import ru.smirnov.test.moretechapp.models.Car;
-import ru.smirnov.test.moretechapp.views.adapters.HorizontalCarRecyclerAdapter;
+import ru.smirnov.test.moretechapp.views.adapters.VerticalCarRecyclerAdapter;
 
-public class RecognitionResultActivity extends AppCompatActivity implements HorizontalCarRecyclerAdapter.OnClickCallback {
+import static ru.smirnov.test.moretechapp.views.CarInfoActivity.carImage;
+
+public class RecognitionResultActivity extends AppCompatActivity implements VerticalCarRecyclerAdapter.OnClickCallback {
     private final static String TAG = RecognitionResultActivity.class.getName();
 
     private ProgressIndicator loadingIndicator;
@@ -44,6 +49,10 @@ public class RecognitionResultActivity extends AppCompatActivity implements Hori
     public static final MediaType JSON
             = MediaType.get("application/json; charset=utf-8");
 
+    private MarketPlaceCars marketPlaceCars;
+    private HistoryCars historyCars;
+    private View placeHolder;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,10 +60,19 @@ public class RecognitionResultActivity extends AppCompatActivity implements Hori
         Intent intent = getIntent();
         String filePath = intent.getStringExtra(CameraActivity.BYTE_IMAGE);
 
+        placeHolder = findViewById(R.id.placeholder_container_recres);
+//        findViewById(R.id.repeat_camera_btn).setOnClickListener(view -> {
+//
+//        });
+        marketPlaceCars = MarketPlaceCars.getInstance();
+        historyCars = HistoryCars.getInstance();
         loadingIndicator = findViewById(R.id.progress_indicator);
         carRecognitionResultRv = findViewById(R.id.recog_result_rv);
+        Toolbar toolbar = findViewById(R.id.car_toolbar_recres);
+        toolbar.setNavigationIcon(R.drawable.arrow_left);
+        toolbar.setNavigationOnClickListener(view -> finish());
 
-        HorizontalCarRecyclerAdapter marketplaceAdapter = new HorizontalCarRecyclerAdapter(new ArrayList<>(), this);
+        VerticalCarRecyclerAdapter marketplaceAdapter = new VerticalCarRecyclerAdapter(new ArrayList<>(), this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(
                 this,
                 LinearLayoutManager.VERTICAL,
@@ -87,15 +105,31 @@ public class RecognitionResultActivity extends AppCompatActivity implements Hori
                 try {
                     responseBody = client.newCall(request).execute().body();
                     Car[] cars = objectMapper.readValue(responseBody.string(), Car[].class);
-                    List<Car> carsList = new ArrayList<>();
-                    Collections.addAll(carsList, cars);
 
-                    runOnUiThread(() -> {
-                        marketplaceAdapter.addCars(carsList);
-                        loadingIndicator.setVisibility(View.GONE);
-                        carRecognitionResultRv.setVisibility(View.VISIBLE);
-                        marketplaceAdapter.notifyDataSetChanged();
-                    });
+                    if (cars.length != 0) {
+                        List<Car> carsList = new ArrayList<>();
+                        Collections.addAll(carsList, cars);
+                        for (Car car : carsList) {
+                            Car carFound = marketPlaceCars.searchForBrandName(car);
+                            if (carFound != null) {
+                                car.setId(carFound.getId());
+                            } else {
+                                Log.d(TAG, car.getCarBrand() + " " + car.getTitle());
+                            }
+                        }
+                        runOnUiThread(() -> {
+                            historyCars.addCar(carsList.get(0));
+                            marketplaceAdapter.addCars(carsList);
+                            loadingIndicator.setVisibility(View.GONE);
+                            carRecognitionResultRv.setVisibility(View.VISIBLE);
+                            marketplaceAdapter.notifyDataSetChanged();
+                        });
+                    } else {
+                        runOnUiThread(() -> {
+                            loadingIndicator.setVisibility(View.GONE);
+                            placeHolder.setVisibility(View.VISIBLE);
+                        });
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -105,6 +139,8 @@ public class RecognitionResultActivity extends AppCompatActivity implements Hori
 
     @Override
     public void onClick(int index) {
-
+        Intent intent = new Intent(this, CarInfoActivity.class);
+        intent.putExtra(carImage, index);
+        startActivity(intent);
     }
 }

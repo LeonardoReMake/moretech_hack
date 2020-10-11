@@ -329,7 +329,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Все плохо(("
+                    android:text="К сожалению, заявка с выбранными параметрами не одобрена банком"
                     android:textAlignment="center"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"

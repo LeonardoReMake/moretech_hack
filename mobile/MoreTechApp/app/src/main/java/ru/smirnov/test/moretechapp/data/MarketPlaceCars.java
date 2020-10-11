@@ -60,4 +60,23 @@ final public class MarketPlaceCars {
         }
         return null;
     }
+
+    public Car searchForBrandName(String brandMakr) {
+        for (Car car : cars) {
+            if ((car.getCarBrand().toLowerCase()+car.getTitle().toLowerCase()).equals(brandMakr)) {
+                return car;
+            }
+        }
+        return null;
+    }
+
+    public Car searchForBrandName(Car carInto) {
+        for (Car car : cars) {
+            if (car.getCarBrand().toLowerCase().equals(carInto.getCarBrand().toLowerCase()) &&
+                    car.getTitle().toLowerCase().equals(carInto.getTitle().toLowerCase())) {
+                return car;
+            }
+        }
+        return null;
+    }
 }

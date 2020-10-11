@@ -68,6 +68,8 @@
                     android:layout_height="match_parent"
                     android:textSize="20sp"
                     android:textColorHint="#000"
+                    android:inputType="numberDecimal"
+                    android:focusable="false"
                     android:text="@{String.valueOf(userLoan.cost)}"
                     android:id="@+id/user_car_cost"/>
 
@@ -102,6 +104,8 @@
                     android:layout_height="match_parent"
                     android:textSize="20sp"
                     android:textColorHint="#000"
+                    android:focusable="false"
+                    android:inputType="numberDecimal"
                     android:text="@{String.valueOf(userLoan.initialFee)}"
                     android:id="@+id/user_initialFee"/>
 
@@ -136,6 +140,7 @@
                     android:layout_height="match_parent"
                     android:textSize="20sp"
                     android:textColorHint="#000"
+                    android:inputType="numberDecimal"
                     android:focusable="false"
                     android:text="@{String.valueOf(userLoan.term)}"
                     android:id="@+id/user_term"/>
@@ -170,6 +175,7 @@
                     android:layout_height="match_parent"
                     android:textSize="20sp"
                     android:inputType="numberDecimal"
+                    android:focusable="false"
                     android:textColorHint="#000"
                     android:text="@{String.valueOf(userLoan.residualPayment)}"
                     android:id="@+id/user_last_payment"/>

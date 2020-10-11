@@ -52,6 +52,7 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
 
     private FloatingActionButton repeatCapture;
     private FloatingActionButton nextBtn;
+    private FloatingActionButton closeBtn;
 
     private ImageCapture imageCapture;
 
@@ -67,6 +68,11 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
         previewView = findViewById(R.id.viewFinder);
         repeatCapture = findViewById(R.id.repeat_btn);
         nextBtn = findViewById(R.id.next_btn);
+        closeBtn = findViewById(R.id.close_camera);
+
+        closeBtn.setOnClickListener(view -> {
+            finish();
+        });
 
         repeatCapture.setOnClickListener(view -> {
             imagePreview.setVisibility(View.GONE);
@@ -94,6 +100,7 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
 
             Intent intent = new Intent(this, RecognitionResultActivity.class);
             intent.putExtra(BYTE_IMAGE, imgFile.getAbsolutePath());
+//            intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
         });
         takePicture.setOnClickListener(this);
@@ -141,6 +148,7 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
                 nextBtn.setVisibility(View.VISIBLE);
                 imagePreview.setVisibility(View.VISIBLE);
                 imagePreview.setImageBitmap(imageProxyToBitmap(image));
+                imagePreview.setRotation(90f);
                 super.onCaptureSuccess(image);
             }
 

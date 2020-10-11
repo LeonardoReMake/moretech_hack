@@ -115,10 +115,11 @@ public class LoanCalculatorFragment extends Fragment {
             }
         });
 
+        int stepSizeLast = 1;
         viewDataBinding.userLastPaymentSb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                i = ((int)Math.round((float)i/stepSize))*stepSize;
+                i = ((int)Math.round((float)i/stepSizeLast))*stepSizeLast;
                 seekBar.setProgress(i);
                 viewDataBinding.userLastPayment.setText(String.format("%d.0 ₽",seekBar.getProgress()));
             }
