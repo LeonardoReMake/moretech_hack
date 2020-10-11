@@ -250,7 +250,7 @@
                 android:paddingTop="24dp"
                 android:textSize="22sp"
                 android:textColor="#222"
-                android:text='Похожие автомобили' />
+                android:text='Похожие автомобили в маркетплэйсе' />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"

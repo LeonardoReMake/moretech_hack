@@ -172,7 +172,7 @@ public class CarInfoActivity extends AppCompatActivity implements HorizontalCarR
                 @Override
                 public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 10, baos); // bm is the bitmap object
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos); // bm is the bitmap object
                     byte[] b = baos.toByteArray();
 
                     String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
