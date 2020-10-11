@@ -2,15 +2,25 @@ package ru.smirnov.test.moretechapp.models;
 
 import android.graphics.Bitmap;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.ArrayList;
 
-public class Car {
+import androidx.lifecycle.ViewModel;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Car extends ViewModel {
+    private int id;
     private String carBrand;
     private int minprice;
     private String photo;
     private String title;
     private String titleRus;
     private String[] photos;
+
+    private String body;
+    private int doors;
+    private int colors;
 
     private ArrayList<Bitmap> images;
 
@@ -75,5 +85,37 @@ public class Car {
             images = new ArrayList<>();
         }
         images.add(bitmap);
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    public int getDoors() {
+        return doors;
+    }
+
+    public void setDoors(int doors) {
+        this.doors = doors;
+    }
+
+    public int getColors() {
+        return colors;
+    }
+
+    public void setColors(int colors) {
+        this.colors = colors;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

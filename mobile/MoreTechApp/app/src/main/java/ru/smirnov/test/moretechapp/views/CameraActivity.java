@@ -81,11 +81,15 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
             if (!imgFile.exists()) {
                 try {
                     imgFile.createNewFile();
-                    FileOutputStream stream = new FileOutputStream(imgFile);
-                    stream.write(currentImage);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            }
+            try {
+                FileOutputStream stream = new FileOutputStream(imgFile);
+                stream.write(currentImage);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
             Intent intent = new Intent(this, RecognitionResultActivity.class);
@@ -114,7 +118,7 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
                 .build();
 
         imageCapture = new ImageCapture.Builder()
-                .setTargetRotation(Surface.ROTATION_90)
+                .setTargetRotation(Surface.ROTATION_0)
                 .build();
 
 

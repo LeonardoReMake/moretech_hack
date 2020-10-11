@@ -20,7 +20,9 @@
         <activity android:name=".views.MainActivity" />
         <activity android:name=".views.CameraActivity">
         </activity>
+        <activity android:name=".views.CarInfoActivity"/>
         <activity android:name=".views.RecognitionResultActivity" />
+        <activity android:name=".views.CalculateLoanActivity"/>
         <activity android:name=".views.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

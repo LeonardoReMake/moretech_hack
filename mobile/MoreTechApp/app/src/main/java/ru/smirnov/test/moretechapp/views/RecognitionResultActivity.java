@@ -31,13 +31,13 @@ import ru.smirnov.test.moretechapp.R;
 import ru.smirnov.test.moretechapp.models.Car;
 import ru.smirnov.test.moretechapp.views.adapters.HorizontalCarRecyclerAdapter;
 
-public class RecognitionResultActivity extends AppCompatActivity {
+public class RecognitionResultActivity extends AppCompatActivity implements HorizontalCarRecyclerAdapter.OnClickCallback {
     private final static String TAG = RecognitionResultActivity.class.getName();
 
     private ProgressIndicator loadingIndicator;
     private RecyclerView carRecognitionResultRv;
 
-    private String url = "http://10.55.128.106:8080/rest/recognition/";
+    private String url = "http://172.20.10.3:8080/rest/recognition/";
 
     private String json = "{\"content\":\"%s\"}";
 
@@ -54,7 +54,7 @@ public class RecognitionResultActivity extends AppCompatActivity {
         loadingIndicator = findViewById(R.id.progress_indicator);
         carRecognitionResultRv = findViewById(R.id.recog_result_rv);
 
-        HorizontalCarRecyclerAdapter marketplaceAdapter = new HorizontalCarRecyclerAdapter(new ArrayList<>());
+        HorizontalCarRecyclerAdapter marketplaceAdapter = new HorizontalCarRecyclerAdapter(new ArrayList<>(), this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(
                 this,
                 LinearLayoutManager.VERTICAL,
@@ -101,5 +101,10 @@ public class RecognitionResultActivity extends AppCompatActivity {
                 }
             }).start();
         }
+    }
+
+    @Override
+    public void onClick(int index) {
+
     }
 }

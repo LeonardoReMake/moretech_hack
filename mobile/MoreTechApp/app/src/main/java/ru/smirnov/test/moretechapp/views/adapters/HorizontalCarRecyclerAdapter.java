@@ -21,8 +21,15 @@ public class HorizontalCarRecyclerAdapter extends RecyclerView.Adapter<Horizonta
 
     private List<Car> cars;
 
-    public HorizontalCarRecyclerAdapter(List<Car> cars) {
+    public interface OnClickCallback {
+        void onClick(int index);
+    }
+
+    private OnClickCallback callback;
+
+    public HorizontalCarRecyclerAdapter(List<Car> cars, OnClickCallback callback) {
         this.cars = cars;
+        this.callback = callback;
     }
 
     @NonNull
@@ -39,6 +46,7 @@ public class HorizontalCarRecyclerAdapter extends RecyclerView.Adapter<Horizonta
 
     @Override
     public void onBindViewHolder(@NonNull CarItem holder, int position) {
+        holder.carContainer.setOnClickListener(view -> callback.onClick(cars.get(position).getId()));
         holder.bind(cars.get(position));
     }
 
@@ -55,10 +63,12 @@ public class HorizontalCarRecyclerAdapter extends RecyclerView.Adapter<Horizonta
         public ImageView carImg;
         public TextView carTitle;
         public TextView carPrice;
+        public View carContainer;
 
         public CarItem(@NonNull View itemView) {
             super(itemView);
 
+            carContainer = itemView.findViewById(R.id.car_container);
             carImg = itemView.findViewById(R.id.car_img);
             carTitle = itemView.findViewById(R.id.car_title);
             carPrice = itemView.findViewById(R.id.car_price);

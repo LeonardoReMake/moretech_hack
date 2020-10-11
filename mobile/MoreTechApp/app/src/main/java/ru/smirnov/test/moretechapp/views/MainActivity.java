@@ -31,7 +31,6 @@ import butterknife.ButterKnife;
 import ru.smirnov.test.moretechapp.R;
 import ru.smirnov.test.moretechapp.data.MarketPlaceCars;
 import ru.smirnov.test.moretechapp.views.fragments.FavoritesFragment;
-import ru.smirnov.test.moretechapp.views.fragments.LoanCalculatorFragment;
 import ru.smirnov.test.moretechapp.views.fragments.RecommendationFragment;
 import ru.smirnov.test.moretechapp.views.utils.BottomNavigationViewHelper;
 import ru.smirnov.test.moretechapp.views.utils.NoSwipePager;
@@ -71,8 +70,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             AuthorizationFragment authorizationFragment = new AuthorizationFragment();
             authorizationFragment.show(getSupportFragmentManager(), "auth");
         }
-
-
 //        findViewById(R.id.openCameraBtn).setOnClickListener(view -> {
 //            startActivity(new Intent(this, CameraActivity.class));
 //        });
@@ -84,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         NoSwipePagerAdapter pagerAdapter = new NoSwipePagerAdapter(getSupportFragmentManager());
         pagerAdapter.addFragment(new RecommendationFragment());
-        pagerAdapter.addFragment(new LoanCalculatorFragment());
+        pagerAdapter.addFragment(new Fragment());
         pagerAdapter.addFragment(new FavoritesFragment());
 
         noSwipePager.setPagingEnabled(false);

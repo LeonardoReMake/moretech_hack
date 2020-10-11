@@ -37,8 +37,7 @@ public class SplashScreen extends AppCompatActivity {
                     Toast.makeText(this, "Need permission", Toast.LENGTH_LONG).show();
                     Log.d(TAG, "Permissions dined");
                 } else {
-//                    prepareData();
-                    startActivity(new Intent(this, MainActivity.class));
+                    prepareData();
                 }
             });
 
@@ -64,8 +63,7 @@ public class SplashScreen extends AppCompatActivity {
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Manifest.permission.CAMERA});
         } else {
-            // prepareData();
-            startActivity(new Intent(this, MainActivity.class));
+            prepareData();
         }
     }
 
@@ -82,6 +80,12 @@ public class SplashScreen extends AppCompatActivity {
                 ObjectMapper objectMapper = new ObjectMapper();
                 ResponseBody responseBody = client.newCall(request).execute().body();
                 Car[] cars = objectMapper.readValue(responseBody.string(), Car[].class);
+
+                int i = 0;
+                for (Car car : cars) {
+                    car.setId(i);
+                    i++;
+                }
 
                 Thread.sleep(3000);
 

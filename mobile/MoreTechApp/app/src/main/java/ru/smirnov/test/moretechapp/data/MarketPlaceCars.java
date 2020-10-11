@@ -13,7 +13,7 @@ final public class MarketPlaceCars {
 
     private List<Car> cars;
 
-    public static String marketplaceUrl = "http://10.55.128.106:8080/rest/marketplace/";
+    public static String marketplaceUrl = "http://172.20.10.3:8080/rest/marketplace/";
 
     private MarketPlaceCars() {
     }
@@ -50,5 +50,14 @@ final public class MarketPlaceCars {
             this.cars = new ArrayList<>();
         }
         Collections.addAll(this.cars, cars);
+    }
+
+    public Car getForId(int id) {
+        for (Car car : cars) {
+            if (car.getId() == id) {
+                return car;
+            }
+        }
+        return null;
     }
 }

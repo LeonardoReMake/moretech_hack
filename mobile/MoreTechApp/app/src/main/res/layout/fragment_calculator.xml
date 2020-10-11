@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
             name="userLoan"
@@ -11,13 +12,24 @@
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#fff">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/car_toolbar_calc"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="#fff"
+            app:title="Калькулятор"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_bias="0"/>
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/car_toolbar_calc"
+            app:layout_constraintBottom_toTopOf="@id/bottom_container_result"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintVertical_bias="0">
 
@@ -25,6 +37,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:text="Введите информацию для расчёта автокредита"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:textSize="20sp"
+                android:textColor="#222"
+                android:textStyle="bold"
+                android:id="@+id/subtitle_tv"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/user_car_cost_il"
@@ -35,9 +59,9 @@
                 android:layout_marginTop="16dp"
                 android:inputType="numberDecimal"
                 android:hint="Стоимость автомобиля"
-                android:textColorHint="#000"
+                android:textColorHint="@color/colorPrimary"
                 android:textColor="#000"
-                android:background="#fff">
+                app:boxBackgroundColor="#DDDDDD">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -53,9 +77,9 @@
                 android:id="@+id/user_cost_sb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:progress="@{Math.round((float)userLoan.cost / 50000) * 50000}"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
+                android:progress="@{Math.round((float)userLoan.cost)}"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
                 android:paddingTop="16dp"
                 android:max="3000000"
                 android:min="800000" />
@@ -69,7 +93,7 @@
                 android:layout_marginTop="16dp"
                 android:inputType="numberDecimal"
                 android:hint="Первоначальный платеж"
-                android:textColorHint="#000"
+                android:textColorHint="@color/colorPrimary"
                 android:textColor="#000"
                 android:background="#fff">
 
@@ -87,10 +111,10 @@
                 android:id="@+id/user_initialFee_sb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:progress="@{Math.round((float)userLoan.cost / 50000) * 50000}"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="16dp"
+                android:progress="@{Math.round((float)userLoan.cost)}"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="16dp"
                 android:max="1500000"
                 android:min="800000" />
 
@@ -103,7 +127,7 @@
                 android:layout_marginTop="16dp"
                 android:inputType="numberDecimal"
                 android:hint="Срок кредита"
-                android:textColorHint="#000"
+                android:textColorHint="@color/colorPrimary"
                 android:textColor="#000"
                 android:background="#fff">
 
@@ -123,9 +147,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:progress="@{userLoan.term}"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="16dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="16dp"
                 android:max="7"
                 android:min="1" />
 
@@ -137,7 +161,7 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="16dp"
                 android:hint="Остаточный платеж"
-                android:textColorHint="#000"
+                android:textColorHint="@color/colorPrimary"
                 android:textColor="#000"
                 android:background="#fff">
 
@@ -156,10 +180,10 @@
                 android:id="@+id/user_last_payment_sb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:progress="@{Math.round((float)userLoan.residualPayment / 50000) * 50000}"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="16dp"
+                android:progress="@{Math.round((float)userLoan.residualPayment)}"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="16dp"
                 android:max="300"
                 android:min="20" />
 
@@ -176,6 +200,7 @@
         </LinearLayout>
         </ScrollView>
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/bottom_container_result"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:background="#3A83F1"
@@ -184,6 +209,24 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintVertical_bias="1">
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="16dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintVertical_bias="0">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ежемесячный платеж"
+                    android:textColor="#fff"
+                    android:textSize="16sp"/>
+
+
             <TextView
                 android:id="@+id/user_payment"
                 android:layout_width="wrap_content"
@@ -191,12 +234,29 @@
                 android:textSize="22sp"
                 android:textColor="#fff"
                 android:textStyle="bold"
-                android:padding="16dp"
                 android:text="@{String.valueOf(userLoanResult.payment)}"
+                />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="16dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintVertical_bias="0"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1"
+                app:layout_constraintVertical_bias="0">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Процентная ставка"
+                android:textColor="#fff"
+                android:textSize="16sp"/>
 
             <TextView
                 android:id="@+id/user_contractRate"
@@ -205,14 +265,26 @@
                 android:textSize="22sp"
                 android:textColor="#fff"
                 android:textStyle="bold"
-                android:padding="16dp"
                 android:text="@{String.valueOf(userLoanResult.contractRate)}"
+                />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="16dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1"
-                app:layout_constraintVertical_bias="0"/>
+                app:layout_constraintVertical_bias="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Сумма кредита"
+                android:textColor="#fff"
+                android:textSize="16sp"/>
 
             <TextView
                 android:id="@+id/user_loanAmount"
@@ -221,12 +293,10 @@
                 android:textSize="22sp"
                 android:textColor="#fff"
                 android:textStyle="bold"
-                android:padding="16dp"
                 android:text="@{String.valueOf(userLoanResult.loanAmount)}"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintVertical_bias="1"/>
+                />
+
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
