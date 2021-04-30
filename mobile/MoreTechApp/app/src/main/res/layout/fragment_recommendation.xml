@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="50dp">
+
+        <TextView
+            android:id="@+id/bank_products_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="28sp"
+            android:padding="16dp"
+            android:textColor="#222"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0"
+            android:text="Главная"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/bank_products_rv"
+            android:scrollbars="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/bank_products_tv"
+            app:layout_constraintBottom_toTopOf="@id/marketplace_tv"/>
+
+        <TextView
+            android:id="@+id/marketplace_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="22sp"
+            android:paddingTop="24dp"
+            android:textColor="#222"
+            android:paddingLeft="16dp"
+            android:textStyle="bold"
+            android:text="Рекомендации"
+            app:layout_constraintTop_toBottomOf="@id/bank_products_rv"
+            app:layout_constraintBottom_toTopOf="@id/marketplace_rv" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/marketplace_rv"
+            android:scrollbars="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/marketplace_tv"
+            app:layout_constraintBottom_toTopOf="@id/recommendation_tv"/>
+
+        <TextView
+            android:id="@+id/recommendation_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="22sp"
+            android:paddingTop="24dp"
+            android:textColor="#222"
+            android:paddingLeft="16dp"
+            android:textStyle="bold"
+            android:text="Другие также ищут"
+            app:layout_constraintTop_toBottomOf="@id/marketplace_rv"
+            app:layout_constraintBottom_toTopOf="@id/recommendation_rv" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/recommendation_rv"
+            android:scrollbars="horizontal"
+            android:paddingBottom="50dp"
+            app:layout_constraintTop_toBottomOf="@id/recommendation_tv"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        app:backgroundTint="@color/blue_60"
+        android:src="@drawable/camera_icon"
+        android:layout_margin="16dp"
+        app:fabCustomSize="70dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="1"
+        app:layout_constraintHorizontal_bias="1"
+        android:id="@+id/btn_start_camera" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

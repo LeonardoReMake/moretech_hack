@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="currentUser"
+            type="ru.smirnov.test.moretechapp.models.CurrentUser" />
+    </data>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#fff">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:src="@drawable/close_icon"
+        android:id="@+id/close_dialog_loanapp"
+        tools:ignore="ContentDescription" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/fields_container_loan_app"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/enter_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:textSize="32sp"
+            android:textColor="#222"
+            android:text="Заявка"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Введите информацию для оформления заявки на автокредит"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:textSize="20sp"
+            android:textColor="#222"
+            android:id="@+id/subtitle_tv"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/user_fio_il"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:hint="Как к вам обращаться"
+            android:textColorHint="@color/colorPrimary"
+            android:textColor="#000"
+            android:background="#fff">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="20sp"
+                android:text="@{currentUser.fio}"
+                android:textColorHint="#000"
+                android:id="@+id/user_fio"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/user_gender_il"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:hint="Ваш пол"
+                android:textColorHint="@color/colorPrimary"
+                android:textColor="#000"
+                android:background="#fff">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="20sp"
+                    android:text="@{currentUser.gender}"
+                    android:textColorHint="#000"
+                    android:id="@+id/user_gender"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/user_nationality_il"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:hint="Гражданство"
+                android:textColorHint="@color/colorPrimary"
+                android:textColor="#000"
+                android:background="#fff">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="20sp"
+                    android:text="@{currentUser.nationality}"
+                    android:textColorHint="#000"
+                    android:id="@+id/user_nationality"/>
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/user_city_il"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:hint="Город проживания"
+                android:textColorHint="@color/colorPrimary"
+                android:textColor="#000"
+                android:background="#fff">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="20sp"
+                    android:text="@{currentUser.city}"
+                    android:textColorHint="#000"
+                    android:id="@+id/user_phone"/>
+            </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/user_birth_il"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:hint="Дата рождения"
+            android:textColorHint="@color/colorPrimary"
+            android:textColor="#000"
+            android:background="#fff">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="20sp"
+                android:text="@{currentUser.birth}"
+                android:textColorHint="#000"
+                android:id="@+id/user_birth"/>
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/user_number_il"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:hint="Контактный телефон"
+            android:textColorHint="@color/colorPrimary"
+            android:textColor="#000"
+            android:background="#fff">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="20sp"
+                android:text="@{currentUser.number}"
+                android:textColorHint="#000"
+                android:id="@+id/user_number"/>
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/user_income_il"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:hint="Месячный доход"
+            android:textColorHint="@color/colorPrimary"
+            android:textColor="#000"
+            android:background="#fff">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="20sp"
+                android:text="@{String.valueOf(currentUser.income)}"
+                android:textColorHint="#000"
+                android:id="@+id/user_income"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.appcompat.widget.AppCompatSeekBar
+            android:id="@+id/user_income_sb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:progress="@{Math.round((float)currentUser.income / 1000) * 1000}"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="16dp"
+            android:max="500000"
+            android:min="10000" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/user_comment_il"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:hint="Коментарий"
+            android:textColorHint="@color/colorPrimary"
+            android:textColor="#000"
+            android:background="#fff">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="20sp"
+                android:text="@{currentUser.comment}"
+                android:textColorHint="#000"
+                android:id="@+id/user_comment"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:background="@drawable/btn_round"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_margin="16dp"
+            android:text="ОТПРАВИТЬ ЗАЯВКУ"
+            android:textColor="#FFF"
+            android:id="@+id/continue_loan_application"
+            style="?android:attr/borderlessButtonStyle"/>
+    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/result_container_loan_app"
+            android:visibility="gone">
+
+            <com.google.android.material.progressindicator.ProgressIndicator
+                style="@style/Widget.MaterialComponents.ProgressIndicator.Circular.Indeterminate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:id="@+id/progress_indicator_loan_app"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/result_succ_container_loan_app"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:src="@drawable/suc_load"
+                    android:layout_gravity="center_horizontal"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:textSize="32sp"
+                    android:textColor="#222"
+                    android:textAlignment="center"
+                    android:text="Ваша заявка принята"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Скоро вам позвонят и сообщат о решении"
+                    android:paddingStart="16dp"
+                    android:textAlignment="center"
+                    android:paddingEnd="16dp"
+                    android:textSize="20sp"
+                    android:textColor="#9e9e9e" />
+
+                <Button
+                    android:background="@drawable/btn_round"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_margin="16dp"
+                    android:text="ВЕРНУТЬСЯ НА ГЛАВНУЮ"
+                    android:textColor="#FFF"
+                    android:id="@+id/return_main_loan_application"
+                    style="?android:attr/borderlessButtonStyle"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/result_fail_container_loan_app"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:src="@drawable/fail_loan"
+                    android:layout_gravity="center_horizontal"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:textSize="32sp"
+                    android:textColor="#222"
+                    android:textAlignment="center"
+                    android:text="Ваша заявка откланена"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="К сожалению, заявка с выбранными параметрами не одобрена банком"
+                    android:textAlignment="center"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:textSize="20sp"
+                    android:textColor="#9e9e9e" />
+
+                <Button
+                    android:background="@drawable/btn_round"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_margin="16dp"
+                    android:text="ПОДАТЬ НОВУЮ ЗАЯВКУ"
+                    android:textColor="#FFF"
+                    android:id="@+id/return_app_loan_application"
+                    style="?android:attr/borderlessButtonStyle"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
+</layout>
