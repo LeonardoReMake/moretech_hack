@@ -1,8 +1,10 @@
 package ru.moretech.moretech_server.config;
 
+import ru.moretech.moretech_server.datasource.CalculatorDatasource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import ru.moretech.moretech_server.api.MLServerApi;
+import ru.moretech.moretech_server.datasource.CarDatasource;
 import ru.moretech.moretech_server.work_with_vtb_api.CalculatorApi;
 import ru.moretech.moretech_server.work_with_vtb_api.MarketplaceApi;
 import ru.moretech.moretech_server.work_with_vtb_api.RecognitionApi;
@@ -28,4 +30,10 @@ public class BeanConfig {
     public MLServerApi getMLApi() {
         return new MLServerApi();
     }
+
+    @Bean
+    public CalculatorDatasource getCalculatorDatasource() { return new CalculatorDatasource(); }
+
+    @Bean
+    public CarDatasource getCarDatasource() { return new CarDatasource(); }
 }

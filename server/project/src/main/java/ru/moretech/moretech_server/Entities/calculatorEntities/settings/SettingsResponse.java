@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class SettingsResponse {
     private String anchor;
     @JsonProperty
-    private String[] clientTypes;
+    private String[] clientTypes = {"fds", "dsfds", "dsf"};
     private double cost;
     private double initialFee;
     private int kaskoDefaultValue;
@@ -15,9 +15,9 @@ public class SettingsResponse {
     private String name;
     private boolean openInNewTab;
     @JsonProperty
-    private String[] programs;
+    private String[] programs = {"loan"};
     @JsonProperty
-    private SpecialConditions[] specialConditions;
+    private SpecialConditions[] specialConditions = {new SpecialConditions()};
     @JsonProperty
-    private Variant variant;
+    private Variant variant = new Variant();
 }
