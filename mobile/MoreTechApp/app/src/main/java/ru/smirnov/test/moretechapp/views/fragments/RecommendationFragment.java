@@ -19,6 +19,7 @@ import butterknife.ButterKnife;
 import ru.smirnov.test.moretechapp.R;
 import ru.smirnov.test.moretechapp.data.MarketPlaceCars;
 import ru.smirnov.test.moretechapp.models.BankProduct;
+import ru.smirnov.test.moretechapp.views.CalculateLoanActivity;
 import ru.smirnov.test.moretechapp.views.CameraActivity;
 import ru.smirnov.test.moretechapp.views.CarInfoActivity;
 import ru.smirnov.test.moretechapp.views.adapters.BankProductRecyclerAdapter;
@@ -41,6 +42,10 @@ public class RecommendationFragment extends Fragment implements HorizontalCarRec
     private List<BankProduct> bankProductList;
 
     private MarketPlaceCars marketPlaceCars;
+
+    private HorizontalCarRecyclerAdapter marketplaceAdapter;
+    private HorizontalCarRecyclerAdapter recommendationAdapter;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,16 +74,20 @@ public class RecommendationFragment extends Fragment implements HorizontalCarRec
         bankProductsRv = rootView.findViewById(R.id.bank_products_rv);
         recommendationRv = rootView.findViewById(R.id.recommendation_rv);
 
-        HorizontalCarRecyclerAdapter recomendationAdapter = new HorizontalCarRecyclerAdapter(marketPlaceCars.getCars(10).subList(5, 10), this);
+        recommendationAdapter = new HorizontalCarRecyclerAdapter(marketPlaceCars.getCars(10), this);
         LinearLayoutManager layoutManagerRecom = new LinearLayoutManager(
                 getActivity(),
                 LinearLayoutManager.HORIZONTAL,
                 false);
-        recommendationRv.setAdapter(recomendationAdapter);
+        recommendationRv.setAdapter(recommendationAdapter);
         recommendationRv.setLayoutManager(layoutManagerRecom);
 
         BankProductRecyclerAdapter bankProductRecyclerAdapter = new BankProductRecyclerAdapter(bankProductList, index -> {
-
+            if (index == 0) {
+                Intent intent = new Intent(requireContext(), CalculateLoanActivity.class);
+                intent.putExtra("isApplicable", false);
+                startActivity(intent);
+            }
         });
         bankProductsRv.setAdapter(bankProductRecyclerAdapter);
         LinearLayoutManager bankProdsLayoutManager = new LinearLayoutManager(
@@ -87,7 +96,7 @@ public class RecommendationFragment extends Fragment implements HorizontalCarRec
                 false);
         bankProductsRv.setLayoutManager(bankProdsLayoutManager);
 
-        HorizontalCarRecyclerAdapter marketplaceAdapter = new HorizontalCarRecyclerAdapter(marketPlaceCars.getCars(5), this);
+        marketplaceAdapter = new HorizontalCarRecyclerAdapter(marketPlaceCars.getCars(5), this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(
                 getActivity(),
                 LinearLayoutManager.HORIZONTAL,
@@ -98,10 +107,17 @@ public class RecommendationFragment extends Fragment implements HorizontalCarRec
         return rootView;
     }
 
+    public void updateCars() {
+        recommendationAdapter.setCars(marketPlaceCars.getCars(10));
+        recommendationAdapter.notifyDataSetChanged();
+        marketplaceAdapter.setCars(marketPlaceCars.getCars(5));
+        marketplaceAdapter.notifyDataSetChanged();
+    }
+
     @Override
-    public void onClick(int index) {
+    public void onClick(String id) {
         Intent intent = new Intent(getActivity(), CarInfoActivity.class);
-        intent.putExtra(carImage, index);
+        intent.putExtra(carImage, id);
         startActivity(intent);
     }
 }

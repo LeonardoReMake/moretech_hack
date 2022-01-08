@@ -2,42 +2,65 @@ package ru.smirnov.test.moretechapp.views;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.android.material.progressindicator.ProgressIndicator;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 
-import java.io.IOException;
+import java.util.List;
+
+import javax.inject.Inject;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.ResponseBody;
+import dagger.hilt.android.AndroidEntryPoint;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import ru.smirnov.test.moretechapp.CustomApplication;
 import ru.smirnov.test.moretechapp.R;
 import ru.smirnov.test.moretechapp.data.MarketPlaceCars;
 import ru.smirnov.test.moretechapp.models.Car;
+import ru.smirnov.test.moretechapp.network.services.AuthorisationService;
+import ru.smirnov.test.moretechapp.network.services.CarsService;
+import ru.smirnov.test.moretechapp.network.services.LoginRequest;
+import ru.smirnov.test.moretechapp.network.services.LoginResponse;
 
+@AndroidEntryPoint
 public class SplashScreen extends AppCompatActivity {
     private final static String TAG = SplashScreen.class.getName();
 
     private MarketPlaceCars marketPlaceCars;
 
-    private ProgressIndicator progressIndicator;
+    private CircularProgressIndicator progressIndicator;
 
-    private ActivityResultLauncher<String[]> requestPermissionLauncher =
+    public static String LOGIN_SP_TAG = "login_credentials";
+    public static String PASS_SP_TAG = "pass_credentials";
+
+    public final static String SHARED_PREF = "shared_preferencies";
+
+    private TextView statusTV;
+
+    @Inject
+    AuthorisationService authorisationService;
+
+    @Inject
+    CarsService carsService;
+
+    private final ActivityResultLauncher<String[]> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), isGranted -> {
                 if (isGranted.containsValue(Boolean.FALSE)) {
-                    Toast.makeText(this, "Need permission", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Для работы приложения нужны запрашиваемые разрешения", Toast.LENGTH_LONG).show();
                     Log.d(TAG, "Permissions dined");
                 } else {
-                    prepareData();
+                    checkAuthorisation();
                 }
             });
 
@@ -46,15 +69,64 @@ public class SplashScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        marketPlaceCars = MarketPlaceCars.getInstance();
+        statusTV = findViewById(R.id.statusTV);
 
-//        progressIndicator = findViewById(R.id.loading_splash_scr);
+        marketPlaceCars = MarketPlaceCars.getInstance();
 
         checkForPermission();
     }
 
+    private void checkAuthorisation() {
+        updateStatus("Проверка авторизации");
+
+        final SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREF, MODE_PRIVATE);
+        final String login = sharedPreferences.getString(LOGIN_SP_TAG, null);
+        final String pass = sharedPreferences.getString(PASS_SP_TAG, null);
+
+        Call<LoginResponse> authRequest = authorisationService.login(new LoginRequest(login, pass));
+        authRequest.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                if (!response.isSuccessful()) {
+                    onFailure(call, new InternalError());
+                    return;
+                }
+
+                LoginResponse loginResponse = response.body();
+
+                if (loginResponse == null) {
+                    onFailure(call, new InternalError());
+                    return;
+                }
+
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean(MainActivity.loggedIn, true).apply();
+                editor.putString(MainActivity.TOKEN_SP_TAG, loginResponse.getToken()).apply();
+                CustomApplication.userToken = loginResponse.getToken();
+
+                updateStatus("Успешно авторизированы");
+
+                prepareData();
+            }
+
+            @Override
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+                Log.e(TAG, String.format("Error while log in with %s %s. Error: ", login, pass) + t.getMessage());
+                updateStatus("Не удалось авторизироваться");
+
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean(MainActivity.loggedIn, false).apply();
+
+                Intent intent = new Intent(SplashScreen.this, MainActivity.class);
+                intent.putExtra("MainActivity.loggedIn", false);
+                startActivity(intent);
+            }
+        });
+    }
+
     private void checkForPermission() {
         Log.d(TAG, "Checking permissions");
+        updateStatus("Проверка доступов");
         if (!(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 == PackageManager.PERMISSION_GRANTED)) {
             Log.d(TAG, "Permissions missing. Ask for permission");
@@ -63,42 +135,48 @@ public class SplashScreen extends AppCompatActivity {
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Manifest.permission.CAMERA});
         } else {
-            prepareData();
+            checkAuthorisation();
         }
     }
 
     private void prepareData() {
-        OkHttpClient client = new OkHttpClient();
-        String urlMarketplace = MarketPlaceCars.marketplaceUrl;
-        Request request = new Request.Builder()
-                .url(urlMarketplace)
-                .build();
+        updateStatus("Загружаем данные");
 
-        Log.d(TAG, String.format("Send request to prepare marketplace cars %s", urlMarketplace));
-        new Thread(() -> {
-            try {
-                ObjectMapper objectMapper = new ObjectMapper();
-                ResponseBody responseBody = client.newCall(request).execute().body();
-                Car[] cars = objectMapper.readValue(responseBody.string(), Car[].class);
-
-                int i = 0;
-                for (Car car : cars) {
-                    car.setId(i);
-                    i++;
+        Call<List<Car>> allCarRequest = carsService.getAllCars();
+        allCarRequest.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(Call<List<Car>> call, Response<List<Car>> response) {
+                if (!response.isSuccessful()) {
+                    onFailure(call, new InternalError());
+                    return;
                 }
 
-                Thread.sleep(3000);
+                List<Car> allCarResponse = response.body();
+                if (allCarResponse == null) {
+                    onFailure(call, new InternalError());
+                    return;
+                }
 
-                runOnUiThread(() -> {
-                    marketPlaceCars.setCars(cars);
-                    Intent intent = new Intent(this, MainActivity.class);
-//                    intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
-                    startActivity(intent);
-                });
-            } catch (IOException | InterruptedException e) {
-                Log.e(TAG, "Could not send request");
-                e.printStackTrace();
+                updateStatus("Данные успешно загружены");
+
+                marketPlaceCars.setCars(allCarResponse);
+                Intent intent = new Intent(SplashScreen.this, MainActivity.class);
+                intent.putExtra(MainActivity.loggedIn, true);
+                startActivity(intent);
             }
-        }).start();
+
+            @Override
+            public void onFailure(Call<List<Car>> call, Throwable t) {
+                Log.e(TAG, "Error while receiving list of cars. Error: " + t.getMessage());
+                updateStatus("Ошибка загрузки данных");
+
+                Toast.makeText(SplashScreen.this,
+                        "Не удалось загрузить список автомобилей. Попробуйте позже", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void updateStatus(String text) {
+        statusTV.setText(text);
     }
 }

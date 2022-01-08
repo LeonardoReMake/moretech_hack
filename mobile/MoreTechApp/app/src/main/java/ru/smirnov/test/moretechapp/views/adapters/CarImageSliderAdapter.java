@@ -13,19 +13,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.smirnov.test.moretechapp.R;
+import ru.smirnov.test.moretechapp.models.CarPhoto;
 
 public class CarImageSliderAdapter extends SliderViewAdapter<CarImageSliderAdapter.SliderAdapterVH> {
     private final static String TAG = CarImageSliderAdapter.class.getName();
 
     private Context context;
-    private List<String> mSliderItems = new ArrayList<>();
+    private List<CarPhoto> mSliderItems = new ArrayList<>();
 
-    public CarImageSliderAdapter(Context context, List<String> mSliderItems) {
+    public CarImageSliderAdapter(Context context, List<CarPhoto> mSliderItems) {
         this.context = context;
         this.mSliderItems = mSliderItems;
     }
 
-    public void renewItems(List<String> sliderItems) {
+    public void renewItems(List<CarPhoto> sliderItems) {
         this.mSliderItems = sliderItems;
         notifyDataSetChanged();
     }
@@ -38,7 +39,7 @@ public class CarImageSliderAdapter extends SliderViewAdapter<CarImageSliderAdapt
 
     @Override
     public void onBindViewHolder(SliderAdapterVH viewHolder, final int position) {
-        viewHolder.bind(mSliderItems.get(position));
+        viewHolder.bind(mSliderItems.get(position).getLink());
     }
 
     @Override

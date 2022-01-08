@@ -22,7 +22,7 @@ public class VerticalCarRecyclerAdapter extends RecyclerView.Adapter<VerticalCar
     private List<Car> cars;
 
     public interface OnClickCallback {
-        void onClick(int index);
+        void onClick(String index);
     }
 
     private VerticalCarRecyclerAdapter.OnClickCallback callback;
@@ -81,9 +81,11 @@ public class VerticalCarRecyclerAdapter extends RecyclerView.Adapter<VerticalCar
 //            } else {
 //                carImg.setImageBitmap(car.getImages().get(0));
 //            }
-            Picasso.get().load(car.getPhoto()).into(carImg);
-            carTitle.setText(String.format("%s %s", car.getCarBrand(), car.getTitle()));
-            carPrice.setText(String.format("%d ₽", car.getMinprice()));
+            if (car.getPhotos().length > 0) {
+                Picasso.get().load(car.getPhotos()[0].getLink()).into(carImg);
+            }
+            carTitle.setText(String.format("%s %s", car.getBrand(), car.getModel()));
+            carPrice.setText(String.format("%d ₽", car.getMinPrice()));
         }
     }
 }

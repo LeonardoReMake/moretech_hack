@@ -5,18 +5,20 @@ import android.graphics.Bitmap;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import androidx.lifecycle.ViewModel;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Car extends ViewModel {
-    private int id;
-    private String carBrand;
-    private int minprice;
+    private String id;
+    private String brand;
+    private int minPrice;
     private String photo;
-    private String title;
+    private String model;
     private String titleRus;
-    private String[] photos;
+    private String[] photoLinks;
+    private CarPhoto[] photos;
 
     private String body;
     private int doors;
@@ -24,20 +26,20 @@ public class Car extends ViewModel {
 
     private ArrayList<Bitmap> images;
 
-    public String getCarBrand() {
-        return carBrand;
+    public String getBrand() {
+        return brand;
     }
 
-    public void setCarBrand(String carBrand) {
-        this.carBrand = carBrand;
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 
-    public int getMinprice() {
-        return minprice;
+    public int getMinPrice() {
+        return minPrice;
     }
 
-    public void setMinprice(int minprice) {
-        this.minprice = minprice;
+    public void setMinPrice(int minPrice) {
+        this.minPrice = minPrice;
     }
 
     public String getPhoto() {
@@ -48,12 +50,12 @@ public class Car extends ViewModel {
         this.photo = photo;
     }
 
-    public String getTitle() {
-        return title;
+    public String getModel() {
+        return model;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setModel(String model) {
+        this.model = model;
     }
 
     public String getTitleRus() {
@@ -64,18 +66,18 @@ public class Car extends ViewModel {
         this.titleRus = titleRus;
     }
 
-    public String[] getPhotos() {
-        return photos;
+    public String[] getPhotoLinks() {
+        return photoLinks;
     }
 
-    public void setPhotos(String[] photos) {
-        this.photos = new String[photos.length+1];
+    public void setPhotoLinks(String[] photoLinks) {
+        this.photoLinks = new String[photoLinks.length+1];
         if (this.photo != null) {
-            this.photos[0] = this.photo;
+            this.photoLinks[0] = this.photo;
         }
         int i = 1;
-        for (String photo : photos) {
-            this.photos[i] = photo;
+        for (String photo : photoLinks) {
+            this.photoLinks[i] = photo;
             i++;
         }
     }
@@ -93,6 +95,15 @@ public class Car extends ViewModel {
             images = new ArrayList<>();
         }
         images.add(bitmap);
+    }
+
+    public CarPhoto[] getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(CarPhoto[] photos) {
+        this.photos = photos;
+        this.photoLinks = (String[]) Arrays.stream(photos).map(CarPhoto::getLink).toArray();
     }
 
     public String getBody() {
@@ -119,11 +130,11 @@ public class Car extends ViewModel {
         this.colors = colors;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 }

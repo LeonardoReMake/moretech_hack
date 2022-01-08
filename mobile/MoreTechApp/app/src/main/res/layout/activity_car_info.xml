@@ -50,7 +50,7 @@
                 android:padding="16dp"
                 android:textSize="28sp"
                 android:textColor="#222"
-                android:text='@{currentCar.carBrand + " " + currentCar.title}'
+                android:text='@{currentCar.brand + " " + currentCar.model}'
                 android:textStyle="bold" />
 
         <com.smarteist.autoimageslider.SliderView
@@ -79,7 +79,7 @@
                 android:paddingTop="24dp"
                 android:textSize="22sp"
                 android:textColor="#222"
-                android:text='@{"от " + currentCar.minprice}'
+                android:text='@{"от " + currentCar.minPrice + " ₽"}'
                 android:textStyle="bold" />
 
             <TextView
@@ -217,7 +217,7 @@
                     android:paddingTop="24dp"
                     android:textSize="22sp"
                     android:textColor="#222"
-                    android:text='от 16 500 рую/мес'
+                    android:text='от 16 500 руб/мес'
                     android:textStyle="bold" />
 
                 <TextView
@@ -250,14 +250,16 @@
                 android:paddingTop="24dp"
                 android:textSize="22sp"
                 android:textColor="#222"
-                android:text='Похожие автомобили в маркетплэйсе' />
+                android:text='Похожие автомобили в маркетплэйсе'
+                android:visibility="gone"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/recommendation_sim_rv"
                 android:scrollbars="horizontal"
-                android:paddingBottom="50dp" />
+                android:paddingBottom="50dp"
+                android:visibility="gone"/>
 
 <!--            <TextView-->
 <!--                android:layout_width="match_parent"-->

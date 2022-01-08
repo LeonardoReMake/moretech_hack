@@ -94,9 +94,9 @@ public class HistoryFragment extends Fragment implements VerticalCarRecyclerAdap
     }
 
     @Override
-    public void onClick(int index) {
+    public void onClick(String id) {
         Intent intent = new Intent(getActivity(), CarInfoActivity.class);
-        intent.putExtra(carImage, index);
+        intent.putExtra(carImage, id);
         startActivity(intent);
     }
 }

@@ -22,13 +22,13 @@
         android:padding="16dp"
         android:textSize="32sp"
         android:textColor="#222"
-        android:text="Введите номер"
+        android:text="Введите логин"
         android:textStyle="bold" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Введите номер телефона, чтобы войти или зарегистрироваться"
+        android:text="Введите логин, чтобы войти или зарегистрироваться"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:textSize="20sp"
@@ -36,13 +36,13 @@
         android:id="@+id/subtitle_tv"/>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/user_phone_input_layout"
+        android:id="@+id/user_login_input_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="16dp"
-        android:hint="Номер телефона"
+        android:hint="Логин"
         android:textColorHint="#000"
         android:textColor="#000"
         android:background="#fff">
@@ -52,7 +52,30 @@
             android:layout_height="match_parent"
             android:textSize="20sp"
             android:textColorHint="#000"
-            android:id="@+id/user_phone"/>
+            android:id="@+id/user_login"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/user_password_input_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="16dp"
+        android:hint="Пароль"
+        app:passwordToggleEnabled="true"
+        android:textColorHint="#000"
+        android:textColor="#000"
+        android:background="#fff">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="20sp"
+            android:textColorHint="#000"
+            android:inputType="textPassword"
+            android:id="@+id/user_password"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -66,6 +89,15 @@
         android:id="@+id/continue_auth"
         style="?android:attr/borderlessButtonStyle"/>
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_register"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="16dp"
+        android:text="Регистрация"
+        android:textColor="@color/colorPrimary"
+        style="@style/Widget.AppCompat.Button.Borderless"/>
+
     <Button
         android:background="@drawable/btn_round"
         android:layout_width="match_parent"
@@ -77,6 +109,7 @@
         android:textColor="#222"
         android:textStyle="bold"
         android:backgroundTint="@color/gray_5"
+        android:visibility="gone"
         style="?android:attr/borderlessButtonStyle"/>
 
     <Button
@@ -89,17 +122,19 @@
         android:textColor="#222"
         android:textStyle="bold"
         android:backgroundTint="@color/gray_5"
+        android:visibility="gone"
         style="?android:attr/borderlessButtonStyle"/>
 
-    <com.google.android.material.progressindicator.ProgressIndicator
-        style="@style/Widget.MaterialComponents.ProgressIndicator.Circular.Indeterminate"
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        style="@style/Widget.MaterialComponents.ProgressIndicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="56dp"
         android:visibility="gone"
+        tools:visibility="visible"
+        android:indeterminate="true"
         app:indicatorColor="?attr/colorPrimary"
-        app:trackColor="@color/colorAccent"
         android:id="@+id/progress_indicator_auth"/>
 
 </LinearLayout>

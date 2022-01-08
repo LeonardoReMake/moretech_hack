@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import ru.smirnov.test.moretechapp.BuildConfig;
 import ru.smirnov.test.moretechapp.models.Car;
 
 final public class MarketPlaceCars {
@@ -13,7 +14,7 @@ final public class MarketPlaceCars {
 
     private List<Car> cars;
 
-    public static String marketplaceUrl = "http://172.20.10.3:8080/rest/marketplace/";
+    public static String marketplaceUrl = BuildConfig.hostUrl;
 
     private MarketPlaceCars() {
     }
@@ -52,18 +53,19 @@ final public class MarketPlaceCars {
         Collections.addAll(this.cars, cars);
     }
 
-    public Car getForId(int id) {
+    public Car getForId(String id) {
         for (Car car : cars) {
-            if (car.getId() == id) {
+            if (car.getId().equals(id)) {
                 return car;
             }
         }
         return null;
     }
 
-    public Car searchForBrandName(String brandMakr) {
+    public Car searchForBrandName(String brand, String model) {
         for (Car car : cars) {
-            if ((car.getCarBrand().toLowerCase()+car.getTitle().toLowerCase()).equals(brandMakr)) {
+            if (car.getBrand().equalsIgnoreCase(brand) &&
+                    car.getModel().equalsIgnoreCase(model)) {
                 return car;
             }
         }
@@ -72,8 +74,8 @@ final public class MarketPlaceCars {
 
     public Car searchForBrandName(Car carInto) {
         for (Car car : cars) {
-            if (car.getCarBrand().toLowerCase().equals(carInto.getCarBrand().toLowerCase()) &&
-                    car.getTitle().toLowerCase().equals(carInto.getTitle().toLowerCase())) {
+            if (car.getBrand().equalsIgnoreCase(carInto.getBrand()) &&
+                    car.getModel().equalsIgnoreCase(carInto.getModel())) {
                 return car;
             }
         }

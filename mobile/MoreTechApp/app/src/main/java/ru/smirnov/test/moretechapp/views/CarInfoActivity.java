@@ -8,6 +8,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,29 +23,38 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import dagger.hilt.android.AndroidEntryPoint;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import ru.smirnov.test.moretechapp.R;
 import ru.smirnov.test.moretechapp.data.FavoritesCars;
 import ru.smirnov.test.moretechapp.data.MarketPlaceCars;
 import ru.smirnov.test.moretechapp.databinding.ActivityCarInfoBinding;
 import ru.smirnov.test.moretechapp.models.Car;
 import ru.smirnov.test.moretechapp.models.UserLoan;
-import ru.smirnov.test.moretechapp.models.UserLoanResult;
+import ru.smirnov.test.moretechapp.network.services.CalculateCreditService;
+import ru.smirnov.test.moretechapp.network.services.CreditCalculateRequest;
+import ru.smirnov.test.moretechapp.network.services.CreditCalculateResponse;
 import ru.smirnov.test.moretechapp.views.adapters.CarImageSliderAdapter;
 import ru.smirnov.test.moretechapp.views.adapters.HorizontalCarRecyclerAdapter;
 
 import static ru.smirnov.test.moretechapp.views.CalculateLoanActivity.cost;
 import static ru.smirnov.test.moretechapp.views.RecognitionResultActivity.JSON;
 
+@AndroidEntryPoint
 public class CarInfoActivity extends AppCompatActivity implements HorizontalCarRecyclerAdapter.OnClickCallback {
     private final static String TAG = CarInfoActivity.class.getName();
 
@@ -60,6 +70,9 @@ public class CarInfoActivity extends AppCompatActivity implements HorizontalCarR
     private TextView paymentTv;
 
     private HorizontalCarRecyclerAdapter recomendationAdapter;
+
+    @Inject
+    CalculateCreditService calculateCreditService;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,18 +99,18 @@ public class CarInfoActivity extends AppCompatActivity implements HorizontalCarR
         simCarsRv.setLayoutManager(layoutManagerRecom);
 
         Intent intent = getIntent();
-        int index = intent.getIntExtra(carImage, 0);
-        currentCar = marketPlaceCars.getForId(index);
-        boolean isFav = favoritesCars.isFav(index);
+        String id = intent.getStringExtra(carImage);
+        currentCar = marketPlaceCars.getForId(id);
+        boolean isFav = favoritesCars.isFav(id);
         if (isFav) {
             favIcon.setImageResource(R.drawable.fav_full);
         } else {
             favIcon.setImageResource(R.drawable.fav_icon);
         }
         favIcon.setOnClickListener(view -> {
-            if (favoritesCars.isFav(index)) {
+            if (favoritesCars.isFav(id)) {
                 favIcon.setImageResource(R.drawable.fav_icon);
-                favoritesCars.remove(index);
+                favoritesCars.remove(id);
             } else {
                 favIcon.setImageResource(R.drawable.fav_full);
                 favoritesCars.addFav(currentCar);
@@ -113,52 +126,47 @@ public class CarInfoActivity extends AppCompatActivity implements HorizontalCarR
 
         findViewById(R.id.car_calc_loan_btn).setOnClickListener(view -> {
             Intent intentCalc = new Intent(this, CalculateLoanActivity.class);
-            intentCalc.putExtra(cost, currentCar.getMinprice());
+            intentCalc.putExtra(cost, currentCar.getMinPrice());
             startActivity(intentCalc);
         });
 
         calculateLoan();
-
-        calculateSim();
+//        calculateSim();
     }
 
     private void calculateLoan() {
+        UserLoan userLoan = createUserLoan(5*12);
+
+        CreditCalculateRequest creditCalculateRequest = new CreditCalculateRequest(userLoan.cost - userLoan.initialFee, userLoan.term);
+        Call<CreditCalculateResponse> responseCall = calculateCreditService.calculate(creditCalculateRequest);
+
         Log.d(TAG, "Start sending request");
-        OkHttpClient client = new OkHttpClient();
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            String json = objectMapper.writeValueAsString(createUserLoan());
-            String url = "https://gw.hackathon.vtb.ru/vtb/hackathon/calculate";
-            Log.d(TAG, String.format("Send json: %s", json));
-            RequestBody requestBody = RequestBody.create(json, JSON);
-            Request request = new Request.Builder()
-                    .addHeader("x-ibm-client-id", "6a1d19ecf31858bebf7f9038a170afb5")
-                    .url(url)
-                    .post(requestBody)
-                    .build();
-
-            new Thread(() -> {
-                ResponseBody responseBody = null;
-                try {
-                    responseBody = client.newCall(request).execute().body();
-                    String responseJson = responseBody.string();
-                    Log.d(TAG, String.format("Response: %s", responseJson));
-                    UserLoanResult userLoanResult = objectMapper.readValue(responseJson, UserLoanResult.class);
-
-                    runOnUiThread(() -> {
-                        paymentTv.setText(String.format("от %d ₽/мес ", userLoanResult.payment));
-                    });
-                } catch (IOException e) {
-                    e.printStackTrace();
+        responseCall.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(Call<CreditCalculateResponse> call, Response<CreditCalculateResponse> response) {
+                if (!response.isSuccessful()) {
+                    onFailure(call, new InternalError());
+                    return;
                 }
 
-            }).start();
+                CreditCalculateResponse creditCalculateResponse = response.body();
 
+                if (creditCalculateResponse == null) {
+                    onFailure(call, new InternalError());
+                    return;
+                }
 
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+                double payment = (creditCalculateResponse.getMonthPayment() < 0) ? 0 : creditCalculateResponse.getMonthPayment();
 
+                paymentTv.setText(String.format("от %.2f ₽/мес.", payment));
+            }
+
+            @Override
+            public void onFailure(Call<CreditCalculateResponse> call, Throwable t) {
+//                Toast.makeText(CarInfoActivity.this, "Ошибка при подсчете кредита. Попробуйте позже", Toast.LENGTH_LONG).show();
+                Log.e(TAG, t.getLocalizedMessage());
+            }
+        });
     }
 
     private void calculateSim() {
@@ -166,7 +174,7 @@ public class CarInfoActivity extends AppCompatActivity implements HorizontalCarR
         OkHttpClient client = new OkHttpClient();
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            String json = objectMapper.writeValueAsString(createUserLoan());
+            String json = objectMapper.writeValueAsString(createUserLoan(60));
             BitmapPackage bitmapPackage = new BitmapPackage();
             Picasso.get().load(currentCar.getPhoto()).into(new Target() {
                 @Override
@@ -183,7 +191,7 @@ public class CarInfoActivity extends AppCompatActivity implements HorizontalCarR
                     Log.d(TAG, encodedImage);
                     RequestBody requestBody = RequestBody.create(completeJson, JSON);
                     Request request = new Request.Builder()
-                            .url("http://172.20.10.3:8080/rest/recognition/suggestion")
+                            .url("http://10.55.131.161:8080/rest/suggestion")
                             .post(requestBody)
                             .build();
                     new Thread(() -> {
@@ -201,7 +209,7 @@ public class CarInfoActivity extends AppCompatActivity implements HorizontalCarR
                                     if (carFound != null) {
                                         car.setId(carFound.getId());
                                     } else {
-                                        Log.d(TAG, car.getCarBrand() + " " + car.getTitle());
+                                        Log.d(TAG, car.getBrand() + " " + car.getModel());
                                     }
                                 }
                                 runOnUiThread(() -> {
@@ -210,6 +218,10 @@ public class CarInfoActivity extends AppCompatActivity implements HorizontalCarR
                                 });
                             }
                         } catch (IOException e) {
+                            runOnUiThread(() -> {
+                                Toast.makeText(CarInfoActivity.super.getBaseContext(),
+                                        "Не удалось загрузить похожие автомобили", Toast.LENGTH_LONG).show();
+                            });
                             e.printStackTrace();
                         }
                     }).start();
@@ -231,19 +243,19 @@ public class CarInfoActivity extends AppCompatActivity implements HorizontalCarR
 
     }
 
-    private UserLoan createUserLoan() {
+    private UserLoan createUserLoan(int term) {
         UserLoan userLoan = new UserLoan();
-        userLoan.cost = currentCar.getMinprice();
-        userLoan.term = 5;
-        userLoan.initialFee = currentCar.getMinprice() * 0.3d;
+        userLoan.cost = currentCar.getMinPrice();
+        userLoan.term = term;
+        userLoan.initialFee = currentCar.getMinPrice() * 0.3d;
         userLoan.residualPayment = 0;
         return userLoan;
     }
 
     @Override
-    public void onClick(int index) {
+    public void onClick(String id) {
         Intent intent = new Intent(this, CarInfoActivity.class);
-        intent.putExtra(carImage, index);
+        intent.putExtra(carImage, id);
         startActivity(intent);
     }
 

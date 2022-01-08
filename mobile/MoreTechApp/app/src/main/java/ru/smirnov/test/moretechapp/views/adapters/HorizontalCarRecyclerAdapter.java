@@ -22,7 +22,7 @@ public class HorizontalCarRecyclerAdapter extends RecyclerView.Adapter<Horizonta
     private List<Car> cars;
 
     public interface OnClickCallback {
-        void onClick(int index);
+        void onClick(String id);
     }
 
     private OnClickCallback callback;
@@ -59,6 +59,10 @@ public class HorizontalCarRecyclerAdapter extends RecyclerView.Adapter<Horizonta
         this.cars.addAll(cars);
     }
 
+    public void setCars(List<Car> cars) {
+        this.cars = cars;
+    }
+
     public static class CarItem extends RecyclerView.ViewHolder {
         public ImageView carImg;
         public TextView carTitle;
@@ -81,9 +85,13 @@ public class HorizontalCarRecyclerAdapter extends RecyclerView.Adapter<Horizonta
 //            } else {
 //                carImg.setImageBitmap(car.getImages().get(0));
 //            }
-            Picasso.get().load(car.getPhoto()).into(carImg);
-            carTitle.setText(String.format("%s %s", car.getCarBrand(), car.getTitle()));
-            carPrice.setText(String.format("%d ₽", car.getMinprice()));
+            if (car.getPhotos().length > 0) {
+                String photo = car.getPhotos()[0].getLink();
+                Picasso.get().load(photo).into(carImg);
+            }
+
+            carTitle.setText(String.format("%s %s", car.getBrand(), car.getModel()));
+            carPrice.setText(String.format("%d ₽", car.getMinPrice()));
         }
     }
 }

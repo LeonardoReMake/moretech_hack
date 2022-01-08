@@ -114,6 +114,7 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
                 bindCamera(cameraProvider);
             } catch (ExecutionException | InterruptedException e) {
                 Log.e(TAG,"Could not load camera");
+                Log.e(TAG, e.getMessage());
             }
         }, ContextCompat.getMainExecutor(this));
 

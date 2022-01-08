@@ -59,7 +59,6 @@
                 android:layout_marginTop="16dp"
                 android:inputType="numberDecimal"
                 android:hint="Стоимость автомобиля"
-                android:textColorHint="@color/colorPrimary"
                 android:textColor="#000"
                 app:boxBackgroundColor="#DDDDDD">
 
@@ -95,7 +94,6 @@
                 android:layout_marginTop="16dp"
                 android:inputType="numberDecimal"
                 android:hint="Первоначальный платеж"
-                android:textColorHint="@color/colorPrimary"
                 android:textColor="#000"
                 android:background="#fff">
 
@@ -130,8 +128,7 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="16dp"
                 android:inputType="numberDecimal"
-                android:hint="Срок кредита"
-                android:textColorHint="@color/colorPrimary"
+                android:hint="Срок кредита (мес.)"
                 android:textColor="#000"
                 android:background="#fff">
 
@@ -155,7 +152,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="16dp"
-                android:max="7"
+                android:max="84"
                 android:min="1" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -166,9 +163,9 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="16dp"
                 android:hint="Остаточный платеж"
-                android:textColorHint="@color/colorPrimary"
                 android:textColor="#000"
-                android:background="#fff">
+                android:background="#fff"
+                android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -191,7 +188,8 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="16dp"
                 android:max="300"
-                android:min="20" />
+                android:min="20"
+                android:visibility="gone"/>
 
             <Button
                 android:background="@drawable/btn_round"

@@ -31,20 +31,20 @@ public final class FavoritesCars {
         return favCars;
     }
 
-    public boolean isFav(int id) {
+    public boolean isFav(String id) {
         for (Car car : favCars) {
-            if (car.getId() == id) {
+            if (car.getId().equals(id)) {
                 return true;
             }
         }
         return false;
     }
 
-    public void remove(int id) {
+    public void remove(String id) {
         int removeIndex = 0;
         for (int i = 0; i < favCars.size(); i++) {
-            if (favCars.get(i).getId() == id) {
-                removeIndex = id;
+            if (favCars.get(i).getId().equals(id)) {
+                removeIndex = i;
             }
         }
         favCars.remove(removeIndex);

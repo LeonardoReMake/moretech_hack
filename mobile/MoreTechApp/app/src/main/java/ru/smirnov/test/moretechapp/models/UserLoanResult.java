@@ -18,7 +18,7 @@ public class UserLoanResult extends ViewModel {
 
     public double loanAmount;
 
-    public int payment;
+    public double payment;
 
     public double subsidy;
 
@@ -39,7 +39,7 @@ public class UserLoanResult extends ViewModel {
         if (result.get("term") != null)
             this.term = (int) result.get("term");
         if (result.get("payment") != null)
-            this.payment = (int) result.get("payment");
+            this.payment = (double) result.get("payment");
     }
 
     public double getContractRate() {
@@ -74,11 +74,11 @@ public class UserLoanResult extends ViewModel {
         this.loanAmount = loanAmount;
     }
 
-    public int getPayment() {
+    public double getPayment() {
         return payment;
     }
 
-    public void setPayment(int payment) {
+    public void setPayment(double payment) {
         this.payment = payment;
     }
 

@@ -6,10 +6,12 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
+import dagger.hilt.android.AndroidEntryPoint;
 import ru.smirnov.test.moretechapp.R;
 import ru.smirnov.test.moretechapp.models.UserLoan;
 import ru.smirnov.test.moretechapp.views.fragments.LoanCalculatorFragment;
 
+@AndroidEntryPoint
 public class CalculateLoanActivity extends AppCompatActivity {
     private final static String TAG = CalculateLoanActivity.class.getName();
 
@@ -22,13 +24,14 @@ public class CalculateLoanActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         int carCost = intent.getIntExtra(cost, 100000);
+        boolean isApplicable = intent.getBooleanExtra("isApplicable", true);
 
         UserLoan userLoan = new UserLoan();
         userLoan.cost = carCost;
         userLoan.term = 5;
         userLoan.initialFee = carCost * 0.3d;
         userLoan.residualPayment = 0;
-        LoanCalculatorFragment loanCalculatorFragment = new LoanCalculatorFragment(userLoan);
+        LoanCalculatorFragment loanCalculatorFragment = new LoanCalculatorFragment(userLoan, isApplicable);
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
